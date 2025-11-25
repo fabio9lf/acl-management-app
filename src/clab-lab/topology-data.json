@@ -1,0 +1,195 @@
+{
+  "name": "lab",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "clab",
+      "mgmt": {
+        "network": "clab",
+        "bridge": "br-d2cc40a6b005",
+        "ipv4-subnet": "172.20.20.0/24",
+        "ipv4-gw": "172.20.20.1",
+        "ipv6-subnet": "3fff:172:20:20::/64",
+        "ipv6-gw": "3fff:172:20:20::1",
+        "external-access": true
+      }
+    }
+  },
+  "ssh-pub-keys": ["ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJpPC5pM9xYGnyB6aXf1fKyEVVMJEf8f+OoYf5aH+QfSn5CB5++2KDPV9xgrTcKPOzBqthkYFhr5kAxeTNnZxzc="],
+  "nodes": {
+    "h1": {
+      "index": "0",
+      "shortname": "h1",
+      "longname": "clab-lab-h1",
+      "fqdn": "h1.lab.io",
+      "group": "",
+      "labdir": "/home/clab/tesi_LaFalce/src/clab-lab/h1",
+      "kind": "linux",
+      "image": "alpine:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.5",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::5",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-d2cc40a6b005",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h1",
+        "clab-node-longname": "clab-lab-h1",
+        "clab-node-name": "h1",
+        "clab-node-type": "",
+        "clab-owner": "clab",
+        "clab-topo-file": "/home/clab/tesi_LaFalce/src/topology.clab.yaml",
+        "containerlab": "lab"
+      },
+      "port-bindings": [
+      ]
+    },
+    "h2": {
+      "index": "1",
+      "shortname": "h2",
+      "longname": "clab-lab-h2",
+      "fqdn": "h2.lab.io",
+      "group": "",
+      "labdir": "/home/clab/tesi_LaFalce/src/clab-lab/h2",
+      "kind": "linux",
+      "image": "alpine:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.3",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-d2cc40a6b005",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h2",
+        "clab-node-longname": "clab-lab-h2",
+        "clab-node-name": "h2",
+        "clab-node-type": "",
+        "clab-owner": "clab",
+        "clab-topo-file": "/home/clab/tesi_LaFalce/src/topology.clab.yaml",
+        "containerlab": "lab"
+      },
+      "port-bindings": [
+      ]
+    },
+    "h3": {
+      "index": "2",
+      "shortname": "h3",
+      "longname": "clab-lab-h3",
+      "fqdn": "h3.lab.io",
+      "group": "",
+      "labdir": "/home/clab/tesi_LaFalce/src/clab-lab/h3",
+      "kind": "linux",
+      "image": "alpine:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.2",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::2",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-d2cc40a6b005",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h3",
+        "clab-node-longname": "clab-lab-h3",
+        "clab-node-name": "h3",
+        "clab-node-type": "",
+        "clab-owner": "clab",
+        "clab-topo-file": "/home/clab/tesi_LaFalce/src/topology.clab.yaml",
+        "containerlab": "lab"
+      },
+      "port-bindings": [
+      ]
+    },
+    "r1": {
+      "index": "3",
+      "shortname": "r1",
+      "longname": "clab-lab-r1",
+      "fqdn": "r1.lab.io",
+      "group": "",
+      "labdir": "/home/clab/tesi_LaFalce/src/clab-lab/r1",
+      "kind": "linux",
+      "image": "frrouting/frr:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.4",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::4",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-d2cc40a6b005",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/r1",
+        "clab-node-longname": "clab-lab-r1",
+        "clab-node-name": "r1",
+        "clab-node-type": "",
+        "clab-owner": "clab",
+        "clab-topo-file": "/home/clab/tesi_LaFalce/src/topology.clab.yaml",
+        "containerlab": "lab"
+      },
+      "port-bindings": [
+      ]
+    }
+  },
+  "links": [
+    {
+      "endpoints": {
+        "a": {
+          "node": "r1",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:71:fa:de",
+          "peer": "z"
+        },
+        "z": {
+          "node": "h1",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:c1:e0:82",
+          "peer": "a"
+        }
+      }
+    },
+    {
+      "endpoints": {
+        "a": {
+          "node": "r1",
+          "interface": "eth2",
+          "mac": "aa:c1:ab:a1:ea:ce",
+          "peer": "z"
+        },
+        "z": {
+          "node": "h2",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:fe:8d:ed",
+          "peer": "a"
+        }
+      }
+    },
+    {
+      "endpoints": {
+        "a": {
+          "node": "r1",
+          "interface": "eth3",
+          "mac": "aa:c1:ab:b2:32:4b",
+          "peer": "z"
+        },
+        "z": {
+          "node": "h3",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:28:b5:46",
+          "peer": "a"
+        }
+      }
+    }
+  ]
+}
