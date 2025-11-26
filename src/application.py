@@ -17,7 +17,7 @@ def aggiungi():
 
     source = network.find_node_by_name(data["source"])
     dest = network.find_node_by_name(data["dest"])
-    protocolli = data["protocolli"]
+    protocolli = [p.strip() for p in data["protocolli"].split(", ")]
     target = data["target"]
 
     for protocollo in protocolli:

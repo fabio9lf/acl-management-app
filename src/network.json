@@ -27,5 +27,30 @@
             "ip": "192.168.30.2"
         }
     ],
-    "policy": []
+    "policy": [
+        {
+            "source": {
+                "nome": "Host1",
+                "ip": "192.168.10.2"
+            },
+            "dest": {
+                "nome": "LAN2",
+                "ip": "192.168.20.0/24"
+            },
+            "protocollo": "tcp",
+            "target": "DROP"
+        },
+        {
+            "source": {
+                "nome": "Host1",
+                "ip": "192.168.10.2"
+            },
+            "dest": {
+                "nome": "LAN2",
+                "ip": "192.168.20.0/24"
+            },
+            "protocollo": "udp",
+            "target": "DROP"
+        }
+    ]
 }
