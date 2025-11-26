@@ -1,0 +1,20 @@
+.hide{
+    display: none;
+}
+.container{
+    text-align: center;
+}
+.aggiungi > div{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+.aggiungi > div > div{
+    margin: 10px;
+}
+button{
+    margin: 10px;
+}
+button:hover{
+    cursor: pointer;
+}

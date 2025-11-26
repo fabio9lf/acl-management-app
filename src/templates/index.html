@@ -4,16 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione dinamica delle ACL</title>
+    <link rel="stylesheet" href="../static/styles/style.css">
 </head>
 <body>
     <div class="container">
-        <ul>
-            {% for subnet in network.subnets %}
-                <li>
-                    {{subnet.nome}} <br> {{subnet.ip}}
-                </li>
-            {% endfor %}
-        </ul>
+        <h3>
+            Aggiungi una nuova policy 
+        </h3>
+        <div class="aggiungi">
+            <div>
+                <div>
+                    <label for="source_type">Tipo di sorgente:</label>
+                    <select name="source_type" id="source_type">
+                        <option value="none">Nessuno</option>
+                        <option value="host">Host</option>
+                        <option value="subnet">Sottorete</option>
+                    </select>
+                </div>
+                <div class="hide">
+                    <label for="source_subnet">Selezione sottorete:</label>
+                    <select name="source_subnet" id="source_subnet">
+                        {% for subnet in network.subnets %}
+                            <option value="{{subnet.nome}}">{{subnet.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="hide">
+                    <label for="source_host">Seleziona host:</label>
+                    <select name="source_host" id="source_host">
+                        {% for node in network.nodes %}
+                            <option value="{{node.nome}}">{{node.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="dest_type">Tipo di destinazione:</label>
+                    <select name="dest_type" id="dest_type">
+                        <option value="none">Nessuno</option>
+                        <option value="host">Host</option>
+                        <option value="subnet">Sottorete</option>
+                    </select>
+                </div>
+                <div class="hide">
+                    <label for="dest_subnet">Selezione sottorete:</label>
+                    <select name="dest_subnet" id="dest_subnet">
+                        {% for subnet in network.subnets %}
+                            <option value="{{subnet.nome}}">{{subnet.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="hide">
+                    <label for="dest_host">Seleziona host:</label>
+                    <select name="dest_host" id="dest_host">
+                        {% for node in network.nodes %}
+                            <option value="{{node.nome}}">{{node.nome}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="filtro">Scegli come filtrare:</label>
+                    <select name="filtro" id="filtro">
+                        <option value="drop">Rilascia i pacchetti</option>
+                        <option value="accept">Fai passare soltanto i pacchetti</option>
+                    </select>
+                    <label for="protocolli">Seleziona i protocolli:</label>
+                    <select name="protocolli[]" id="protocolli" multiple size="1">
+                        <option value="http">http</option>
+                        <option value="tcp">tcp</option>
+                        <option value="udp">udp</option>
+                        <option value="icmp">icmp</option>
+                        <option value="ssh">ssh</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button id="aggiungi">
+                    Aggiungi
+                </button>
+            </div>
+        </div>
+
     </div>
 </body>
+<script src="../static/scripts/script.js">
+</script>
 </html>
