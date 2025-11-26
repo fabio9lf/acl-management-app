@@ -6,6 +6,14 @@
     <title>Gestione dinamica delle ACL</title>
 </head>
 <body>
-    
+    <div class="container">
+        <ul>
+            {% for subnet in network.subnets %}
+                <li>
+                    {{subnet.nome}} <br> {{subnet.ip}}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
