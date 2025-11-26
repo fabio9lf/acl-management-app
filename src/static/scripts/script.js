@@ -6,6 +6,9 @@ let dest_type  = document.getElementById("dest_type");
 let dest_host = document.getElementById("dest_host");
 let dest_subnet = document.getElementById("dest_subnet");
 
+let filtro = document.getElementById("filtro");
+let protocolli = document.getElementById("protocolli");
+
 let aggiungi = document.getElementById("aggiungi");
 
 source_type.addEventListener("change", () => {
@@ -17,7 +20,57 @@ dest_type.addEventListener("change", ()=>{
 });
 
 aggiungi.addEventListener("click", ()=>{
-    
+    let source, dest;
+    if(source_type.value == "host"){
+        source = source_host.value;
+    }
+    else{
+        if(source_type.value == "subnet"){
+            source = source_subnet.value;
+        }
+        else{
+            source = null;
+        }
+    }
+    if(dest_type.value == "host"){
+        dest = dest_host.value;
+    }
+    else{
+        if(dest_type.value == "subnet"){
+            dest = dest_subnet.value;
+        }
+        else{
+            dest = null;
+        }
+    }
+
+    prot_array = Array.from(protocolli.selectedOptions).map(option => option.value);
+
+    const policy = {
+        source: source,
+        dest: dest,
+        target: filtro.value,
+        protocolli: prot_array.join(", ")
+    }
+
+    fetch("/aggiungi", {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(policy)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Risposta dal server: ", data);
+    });
+
+    source_type.selectedIndex = 0;
+    aggiorna(source_type, source_host, source_subnet);
+    dest_type.selectedIndex = 0;
+    aggiorna(dest_type, dest_host, dest_subnet);
+    filtro.selectedIndex = 0;
+    protocolli.selectedIndex = -1;
 });
 
 function aggiorna(type, host, subnet) {
