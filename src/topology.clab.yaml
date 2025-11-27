@@ -4,10 +4,12 @@ topology:
   nodes:
     r1:
       kind: linux
-      image: frrouting/frr:latest
+      image: frr-ssh
       binds:
         - ./configs/frr-daemons.cfg:/etc/frr/daemons
         - ./configs/r1/frr.conf:/etc/frr/frr.conf
+      ports:
+        - "2223:22/tcp"
     h1:
       kind: linux
       image: alpine:latest

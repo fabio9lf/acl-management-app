@@ -23,7 +23,8 @@ def aggiungi():
     for protocollo in protocolli:
         policy = Policy(source, dest, protocollo, target)
         policy.save()
-        #policy.apply()
+        print("PORCODIO")
+        policy.apply()
     return jsonify({"status":"ok", "Ricevuto": data})
 
 if __name__ == "__main__":

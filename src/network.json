@@ -34,20 +34,8 @@
                 "ip": "192.168.10.2"
             },
             "dest": {
-                "nome": "LAN2",
-                "ip": "192.168.20.0/24"
-            },
-            "protocollo": "tcp",
-            "target": "DROP"
-        },
-        {
-            "source": {
-                "nome": "Host1",
-                "ip": "192.168.10.2"
-            },
-            "dest": {
-                "nome": "LAN2",
-                "ip": "192.168.20.0/24"
+                "nome": "Host2",
+                "ip": "192.168.20.2"
             },
             "protocollo": "udp",
             "target": "DROP"

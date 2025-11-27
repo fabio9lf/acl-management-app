@@ -1,4 +1,5 @@
 import json
+import paramiko
 from dataclasses import dataclass
 from typing import List
 
@@ -38,8 +39,25 @@ class Policy:
         data["policy"].append(self.to_dict())
         with open("network.json", "w") as file:
             json.dump(data, file, indent=4)
-    def apply():
-        pass
+    def apply(self):
+        hostname = "localhost"
+        port = 2223
+        username = "admin"
+        password = "cisco"
+
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(hostname=hostname, port=port, username=username, password=password)
+
+        command = f"bash -c 'sudo iptables -A FORWARD -s {self.src_node.ip} -d {self.dest_node.ip} -p {self.protocollo} -j {self.target}'"
+        stdin, stdout, stderr = client.exec_command(command=command)
+        #stdin, stdout, stderr = client.exec_command(f"echo {password} | sudo -S {command}")
+        print(stderr.read().decode())
+
+        client.close()
+
+
+        
 @dataclass
 class Network:
     subnets:List[Node]
