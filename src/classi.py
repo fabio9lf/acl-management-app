@@ -80,7 +80,16 @@ class Network:
         return Network(
             subnets=[Node(**s) for s in data["sottoreti"]],
             nodes=[Node(**n) for n in data["nodi"]],
-            policies=[Policy(**p) for p in data["policy"]]
+            policies=[
+                Policy(
+                    src_node=Node(**p["src_node"]) if isinstance(p["src_node"], dict) else p["src_node"],
+                    dest_node=Node(**p["dest_node"]) if isinstance(p["dest_node"], dict) else p["dest_node"],
+                    protocollo=p["protocollo"],
+                    target=p["target"],
+                    line_number=p["line_number"]
+                )
+                for p in data["policy"]
+            ]
         )
     
     def find_node_by_name(self, name):
@@ -94,12 +103,19 @@ class Network:
         
 
     def remove_policy(self, number):
+        number = int(number)
+
+        to_remove = None
         for policy in self.policies:
-            if number == policy.line_number:
-                policy.remove()
-                self.policies.remove(policy)
-            if policy.line_number > number:
-                policy.line_number = policy.line_number - 1
+            temp = int(policy.line_number)
+
+            if number == temp:
+                to_remove = policy
+            elif temp > number and to_remove:
+                policy.line_number = str(temp - 1)
+        if to_remove:
+            to_remove.remove()
+            self.policies.remove(to_remove)
         self.save()
 
     def to_dict(self):

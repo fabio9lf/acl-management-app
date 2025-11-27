@@ -47,6 +47,28 @@ aggiungi.addEventListener("click", ()=>{
         }
     }
 
+    if(dest && source){
+        if(dest == source)
+        {
+            source_type.selectedIndex = 0;
+            dest_type.selectedIndex = 0;
+            aggiorna(source_type, source_host, source_subnet);
+            aggiorna(dest_type, dest_host, dest_subnet);
+            alert("sorgente e destinazione devono essere diversi!");
+            return;
+        }
+        else{
+            if(source[source.length - 1] === dest[dest.length - 1]){
+                source_type.selectedIndex = 0;
+                dest_type.selectedIndex = 0;
+                aggiorna(source_type, source_host, source_subnet);
+                aggiorna(dest_type, dest_host, dest_subnet);
+                alert("Sorgente e destinazione devono essere in sottoreti diverse!");
+                return;
+            }
+        }
+    }
+
     prot_array = Array.from(protocolli.selectedOptions).map(option => option.value);
 
     const policy = {
@@ -98,6 +120,8 @@ function aggiorna(type, host, subnet) {
             subnet.parentElement.classList.remove("hide");
         }
         else{
+            subnet.selectedIndex = 0;
+            host.selectedIndex = 0;
             host.parentElement.classList.add("hide");
             subnet.parentElement.classList.add("hide");
         }
