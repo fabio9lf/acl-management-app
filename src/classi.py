@@ -1,7 +1,8 @@
 import json
-import paramiko
 from dataclasses import dataclass
 from typing import List
+from ssh_connection import setup_connection, close_connection
+from retrieve_network import retrieve_network_as_json, update_network
 
 @dataclass
 class Node:
@@ -24,38 +25,48 @@ class Policy:
     dest_node: Node
     protocollo: str
     target: str
+    line_number: str
+
 
     def to_dict(self):
         return {
-            "source": self.src_node.to_dict(),
-            "dest": self.dest_node.to_dict(),
+            "src_node": self.src_node.to_dict() if self.src_node else None,
+            "dest_node": self.dest_node.to_dict() if self.dest_node else None,
             "protocollo": self.protocollo,
-            "target": self.target
+            "target": self.target,
+            "line_number": self.line_number 
         }
 
     def save(self):
-        with open("network.json", "r") as file:
-            data = json.load(file)
+        data = retrieve_network_as_json()
         data["policy"].append(self.to_dict())
-        with open("network.json", "w") as file:
-            json.dump(data, file, indent=4)
+        update_network(data)
     def apply(self):
-        hostname = "localhost"
-        port = 2223
-        username = "admin"
-        password = "cisco"
-
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(hostname=hostname, port=port, username=username, password=password)
-
-        command = f"bash -c 'sudo iptables -A FORWARD -s {self.src_node.ip} -d {self.dest_node.ip} -p {self.protocollo} -j {self.target}'"
+        client = setup_connection()
+        optional = [
+            f"-s {self.src_node.ip}" if self.src_node else None,
+            f"-d {self.dest_node.ip}" if self.dest_node else None,
+            f"-p {self.protocollo}" if self.protocollo else None,
+            f"-j {self.target}" if self.target else None
+        ]
+        command = f"bash -c 'sudo iptables -A FORWARD " + " ".join(filter(None, optional)) + "'"
         stdin, stdout, stderr = client.exec_command(command=command)
-        #stdin, stdout, stderr = client.exec_command(f"echo {password} | sudo -S {command}")
         print(stderr.read().decode())
+        filtered = filter(None, optional)
+        trimmed = [p[2:] if len(p) > 2 else p[-1:] for p in filtered]
+        command = f"bash -c 'sudo iptables -L FORWARD --line-numbers -n | grep " + " | grep".join(trimmed) + "'"
+        stdin, stdout, stderr = client.exec_command(command=command)
 
-        client.close()
+        self.line_number = stdout.read().decode()[0]
+        close_connection(client)
+        self.save()
 
+    def remove(self):
+        client = setup_connection()
+        command = f"bash -c 'sudo iptables -D FORWARD " + self.line_number + "'"
+        stdin, stdout, stderr = client.exec_command(command=command)
+        print(stdout.read().decode() + "\n" + stderr.read().decode())
+        close_connection(client=client)
 
         
 @dataclass
@@ -81,10 +92,24 @@ class Network:
                 return host
         return None
         
+
+    def remove_policy(self, number):
+        for policy in self.policies:
+            if number == policy.line_number:
+                policy.remove()
+                self.policies.remove(policy)
+            if policy.line_number > number:
+                policy.line_number = policy.line_number - 1
+        self.save()
+
     def to_dict(self):
         return {
             "sottoreti": [s.to_dict() for s in self.subnets],
             "nodi": [n.to_dict() for n in self.nodes],
             "policy": [p.to_dict() for p in self.policies]
-        }    
+        }
+
+    def save(self):
+        with open("network.json", "w") as file:
+            json.dump(self.to_dict(), file, indent=4)    
     

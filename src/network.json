@@ -27,18 +27,5 @@
             "ip": "192.168.30.2"
         }
     ],
-    "policy": [
-        {
-            "source": {
-                "nome": "Host1",
-                "ip": "192.168.10.2"
-            },
-            "dest": {
-                "nome": "Host2",
-                "ip": "192.168.20.2"
-            },
-            "protocollo": "udp",
-            "target": "DROP"
-        }
-    ]
+    "policy": []
 }

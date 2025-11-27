@@ -9,7 +9,10 @@ let dest_subnet = document.getElementById("dest_subnet");
 let filtro = document.getElementById("filtro");
 let protocolli = document.getElementById("protocolli");
 
+let line_number = document.getElementById("line_number")
+
 let aggiungi = document.getElementById("aggiungi");
+let rimuovi = document.getElementById("rimuovi")
 
 source_type.addEventListener("change", () => {
     aggiorna(source_type, source_host, source_subnet);
@@ -71,6 +74,17 @@ aggiungi.addEventListener("click", ()=>{
     aggiorna(dest_type, dest_host, dest_subnet);
     filtro.selectedIndex = 0;
     protocolli.selectedIndex = -1;
+});
+
+rimuovi.addEventListener("click", ()=>{
+    console.log(line_number.value)
+
+    fetch('/rimuovi?line_number=' + line_number.value)
+    .then(response => response.text())
+    .then(data => {
+        console.log("Risposta dal server: ", data);
+    });
+    line_number.value = ""
 });
 
 function aggiorna(type, host, subnet) {
