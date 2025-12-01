@@ -74,15 +74,9 @@ class Policy:
             f"-p {self.protocollo}" if self.protocollo else None,
             f"-j {self.target}" if self.target else None
         ]
-        command = f"bash -c 'sudo iptables -I " + self.line_number + " FORWARD " + " ".join(filter(None, optional)) + "'"
+        command = f"bash -c 'sudo iptables -I FORWARD " + self.line_number + " ".join(filter(None, optional)) + "'"
         return command
-    def remove(self):
-        client = setup_connection()
-        command = f"bash -c 'sudo iptables -D FORWARD " + self.line_number + "'"
-        stdin, stdout, stderr = client.exec_command(command=command)
-        print(stdout.read().decode() + "\n" + stderr.read().decode())
-        close_connection(client=client)
-
+    
     def __eq__(self, value):
         if isinstance(value, Policy):
             return self.src_node == value.src_node and self.dest_node == value.dest_node and self.line_number == value.line_number and self.protocollo == value.protocollo and self.target == value.target
