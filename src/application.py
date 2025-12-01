@@ -20,16 +20,28 @@ def aggiungi():
     protocolli = [p.strip() for p in data["protocolli"].split(", ")]
     target = data["target"]
 
+    if dest is not None:
+        router = network.find_node_by_name(dest.nexthop)
+    elif source is not None:
+        router = network.find_node_by_name(source.nexthop)
+    else:
+        router = None
     for protocollo in protocolli:
         policy = Policy(source, dest, protocollo, target, "0")
-        policy.apply()
+        if router is not None:
+            router.insert_policy(policy)
+        else:
+            for r in network.routers:
+                r.insert_policy(policy)
     return jsonify({"status":"ok", "Ricevuto": data})
 
 @app.route("/rimuovi", methods=["GET"])
 def rimuovi():
     line_number = request.args.get("line_number")
+    router_name = request.args.get("router_name")
     network = Network.from_json(retrieve_network_as_json())
-    network.remove_policy(line_number)
+    router = network.find_node_by_name(router_name)
+    router.remove_policy(line_number)
     return jsonify({"status":"ok", "Ricevuto": line_number})
 
 if __name__ == "__main__":

@@ -2,30 +2,42 @@
     "sottoreti": [
         {
             "nome": "LAN1",
-            "ip": "192.168.10.0/24"
+            "ip": "192.168.10.0/24",
+            "nexthop": "Router1"
         },
         {
             "nome": "LAN2",
-            "ip": "192.168.20.0/24"
+            "ip": "192.168.20.0/24",
+            "nexthop": "Router1"
         },
         {
             "nome": "LAN3",
-            "ip": "192.168.30.0/24"
+            "ip": "192.168.30.0/24",
+            "nexthop": "Router1"
         }
     ],
     "nodi": [
         {
             "nome": "Host1",
-            "ip": "192.168.10.2"
+            "ip": "192.168.10.2",
+            "nexthop": "Router1"
         },
         {
             "nome": "Host2",
-            "ip": "192.168.20.2"
+            "ip": "192.168.20.2",
+            "nexthop": "Router1"
         },
         {
             "nome": "Host3",
-            "ip": "192.168.30.2"
+            "ip": "192.168.30.2",
+            "nexthop": "Router1"
         }
     ],
-    "policy": []
+    "router":[
+        {
+            "nome": "Router1",
+            "porta": 2223,
+            "policy":[]
+        }
+    ]
 }
