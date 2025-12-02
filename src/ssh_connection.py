@@ -1,6 +1,6 @@
 
 import paramiko
-def setup_connection(porta=2223):
+def setup_connection(porta=2223) -> paramiko.SSHClient:
     
     hostname = "localhost"
     username = "admin"
@@ -11,8 +11,8 @@ def setup_connection(porta=2223):
     client.connect(hostname=hostname, port=porta, username=username, password=password)
     return client
 
-def close_connection(client):
+def close_connection(client: paramiko.SSHClient):
     client.close()
 
-def execute_command(client, command):
+def execute_command(client: paramiko.SSHClient, command):
     return client.exec_command(command)

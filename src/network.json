@@ -33,11 +33,11 @@
             "nexthop": "Router1"
         }
     ],
-    "router":[
+    "router": [
         {
             "nome": "Router1",
             "porta": 2223,
-            "policy":[]
+            "policy": []
         }
     ]
 }

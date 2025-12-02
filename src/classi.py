@@ -74,7 +74,7 @@ class Policy:
             f"-p {self.protocollo}" if self.protocollo else None,
             f"-j {self.target}" if self.target else None
         ]
-        command = f"bash -c 'sudo iptables -I FORWARD " + self.line_number + " ".join(filter(None, optional)) + "'"
+        command = f"bash -c 'sudo iptables -I FORWARD " + self.line_number + " " + " ".join(filter(None, optional)) + "'"
         return command
     
     def __eq__(self, value):
@@ -104,7 +104,7 @@ class Router:
         same_source = [p for p in self.policies if p.src_node == new_policy.src_node]
         same_dest = [p for p in self.policies if p.dest_node == new_policy.dest_node]
 
-        index = self.policies.count()
+        index = len(self.policies)
 
         ip_new_source = ip_network(new_policy.src_node.ip, strict=False)
         ip_new_dest = ip_network(new_policy.dest_node.ip, strict=False)
@@ -122,20 +122,23 @@ class Router:
             elif ip_new_source.subnet_of(ip_source):
                 index = int(p.line_number) - 1
         
-        self.connect()
-        command = new_policy.command()
-        stdin, stdout, stderr = self.execute(command)
-        print(stdout.read().decode())
-        self.close()
+        
         
         self.policies.insert(index, new_policy)
         for i, p in enumerate(self.policies, start=1):
             p.line_number = str(i)
+            
+        self.connect()
+        command = new_policy.command()
+        stdin, stdout, stderr = self.execute(command)
+        print(stderr.read().decode())
+        self.close()
+
         self.save()
 
     def save(self):
         network = Network.from_json(retrieve_network_as_json())
-        network.update_router_by_name(self.nome)
+        network.update_router_by_name(self)
 
     def remove_policy(self, number):
         number = int(number)
@@ -187,8 +190,9 @@ class Network:
                             target=p["target"],
                             line_number=p["line_number"]
                         )
-                        for p in data["policy"]
-                    ]    
+                        for p in r["policy"]
+                    ],
+                    client=None    
                 )
                 for r in data["router"]
             ]
@@ -217,7 +221,7 @@ class Network:
         return {
             "sottoreti": [s.to_dict() for s in self.subnets],
             "nodi": [n.to_dict() for n in self.nodes],
-            "rotuer": [r.to_dict() for r in self.routers]
+            "router": [r.to_dict() for r in self.routers]
         }
 
     def save(self):
