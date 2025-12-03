@@ -77,7 +77,7 @@
                         <option value="tcp">tcp</option>
                         <option value="udp">udp</option>
                         <option value="icmp">icmp</option>
-                        <option value="ssh">ssh</option>
+                        <option value="ospf">ospf</option>
                     </select>
                 </div>
             </div>
@@ -88,11 +88,61 @@
             </div>
         </div>
         <h3>
-            Rimuovi una policy
+            Policy già esistenti
         </h3>
-        <div class="rimuovi">
-            <input type="text" name="line_number" id="line_number" placeholder="Inserisci il line-number">
-            <button id="rimuovi">Rimuovi</button>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Router
+                        </th>
+                        <th>
+                            Source
+                        </th>
+                        <th>
+                            Dest
+                        </th>
+                        <th>
+                            Target
+                        </th>
+                        <th>
+                            Protocollo
+                        </th>
+                        <th>
+                            Line number
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for  router in network.routers%}
+                    {% for policy in router.policies %}
+                    <tr>
+                        <td>{{router.nome}}</td>
+                        <td>
+                            {{policy.src_node.nome}}
+                        </td>
+                        <td>
+                            {{policy.dest_node.nome}}
+                        </td>
+                        <td>
+                            {{policy.target}}
+                        </td>
+                        <td>
+                            {{policy.protocollo}}
+                        </td>
+                        <td>
+                            {{policy.line_number}}
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <ul id="menu">
+                <li id="modifica">Modifica</li>
+                <li id="elimina">Elimina</li>
+            </ul>
         </div>
 
     </div>

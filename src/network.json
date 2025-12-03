@@ -37,7 +37,38 @@
         {
             "nome": "Router1",
             "porta": 2223,
-            "policy": []
+            "policy": [
+                {
+                    "src_node": {
+                        "nome": "Host1",
+                        "ip": "192.168.10.2",
+                        "nexthop": "Router1"
+                    },
+                    "dest_node": {
+                        "nome": "Host3",
+                        "ip": "192.168.30.2",
+                        "nexthop": "Router1"
+                    },
+                    "protocollo": "",
+                    "target": "DROP",
+                    "line_number": "1"
+                },
+                {
+                    "src_node": {
+                        "nome": "LAN2",
+                        "ip": "192.168.20.0/24",
+                        "nexthop": "Router1"
+                    },
+                    "dest_node": {
+                        "nome": "Host1",
+                        "ip": "192.168.10.2",
+                        "nexthop": "Router1"
+                    },
+                    "protocollo": "",
+                    "target": "DROP",
+                    "line_number": "2"
+                }
+            ]
         }
     ]
 }

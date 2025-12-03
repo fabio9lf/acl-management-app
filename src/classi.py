@@ -67,14 +67,14 @@ class Policy:
     #    self.line_number = stdout.read().decode()[0]
     #    close_connection(client)
     #    self.save()
-    def command(self):
+    def command(self, type):
         optional = [
             f"-s {self.src_node.ip}" if self.src_node else None,
             f"-d {self.dest_node.ip}" if self.dest_node else None,
             f"-p {self.protocollo}" if self.protocollo else None,
             f"-j {self.target}" if self.target else None
         ]
-        command = f"bash -c 'sudo iptables -I FORWARD " + self.line_number + " " + " ".join(filter(None, optional)) + "'"
+        command = f"bash -c 'sudo iptables -" + type +" FORWARD " + self.line_number + " " + " ".join(filter(None, optional)) + "'"
         return command
     
     def __eq__(self, value):
@@ -127,9 +127,9 @@ class Router:
         self.policies.insert(index, new_policy)
         for i, p in enumerate(self.policies, start=1):
             p.line_number = str(i)
-            
+
         self.connect()
-        command = new_policy.command()
+        command = new_policy.command("I")
         stdin, stdout, stderr = self.execute(command)
         print(stderr.read().decode())
         self.close()
@@ -158,6 +158,25 @@ class Router:
             self.policies.remove(to_remove)
         self.save()
 
+    def replace_policy(self, number, new_policy: Policy):
+        if not new_policy:
+            self.remove_policy(number)
+            return
+        
+        new_policy.line_number = number
+        number = int(number)
+
+        for i, policy in enumerate(self.policies):
+            temp = int(policy.line_number)
+            if number == temp:
+                self.policies[i] = new_policy
+
+        self.connect()
+        command = new_policy.command("R")
+        self.execute(command=command)
+        self.close()
+        self.save()
+        
     def to_dict(self):
         return {
             "nome": self.nome,
@@ -211,11 +230,14 @@ class Network:
         return None
         
     def update_router_by_name(self, router: Router):
-        for r in self.routers:
+        for i, r in enumerate(self.routers):
             if r.nome == router.nome:
-                r = router
-                self.save()
-                return
+                self.routers[i] = router
+                break
+
+        print(self.routers[0].policies)
+        self.save()
+        return
 
     def to_dict(self):
         return {

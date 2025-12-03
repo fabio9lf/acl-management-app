@@ -87,7 +87,7 @@ aggiungi.addEventListener("click", ()=>{
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Risposta dal server: ", data);
+        ricarica_tabella(data);
     });
 
     source_type.selectedIndex = 0;
@@ -98,15 +98,41 @@ aggiungi.addEventListener("click", ()=>{
     protocolli.selectedIndex = -1;
 });
 
-rimuovi.addEventListener("click", ()=>{
-    console.log(line_number.value)
+let table = document.querySelector("tbody");
+let selectedRow = null;
+let menu = document.getElementById("menu");
+table.addEventListener("contextmenu", function(e){
+    e.preventDefault();
 
-    fetch('/rimuovi?line_number=' + line_number.value)
-    .then(response => response.text())
-    .then(data => {
-        console.log("Risposta dal server: ", data);
-    });
-    line_number.value = ""
+    const row = e.target.closest("tr");
+    if(!row || row.rowIndex == 0){
+        return;
+    }
+
+    selectedRow = row;
+
+    menu.style.display = "block";
+    menu.style.left = e.pageX + "px";
+    menu.style.top = e.pageY + "px";
+});
+
+document.addEventListener("click", function(){
+    menu.style.display = "none";
+});
+
+document.getElementById("elimina").addEventListener("click",() => {
+    if(selectedRow){
+        router_name = selectedRow.cells[0].innerText;
+        line_number = selectedRow.cells[5].innerText;
+
+        fetch(`/rimuovi?line_number=${encodeURIComponent(line_number)}&router_name=${encodeURIComponent(router_name)}`)
+        .then(res => res.json())
+        .then(data => {
+            ricarica_tabella(data);
+        });
+        selectedRow = null;
+        menu.style.display = "none";
+    }
 });
 
 function aggiorna(type, host, subnet) {
@@ -126,4 +152,22 @@ function aggiorna(type, host, subnet) {
             subnet.parentElement.classList.add("hide");
         }
     }
+}
+
+function ricarica_tabella(data){
+
+    const tbody = document.querySelector("tbody");
+    tbody.innerHTML = "";
+
+    data["router"].forEach(r => {
+        r["policy"].forEach(p =>{
+            const row = document.createElement("tr");
+            row.innerHTML = "<td>" + r["nome"] + "</td><td>" + 
+            p["src_node"]["nome"] + "</td><td>" + 
+            p["dest_node"]["nome"] + "</td><td>" + 
+            p["target"] + "</td><td>" + p["protocollo"] + "</td><td>" + p["line_number"] + "</td>";
+
+            tbody.appendChild(row);
+        });
+    });
 }
