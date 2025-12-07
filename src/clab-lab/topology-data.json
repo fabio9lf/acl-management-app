@@ -6,7 +6,7 @@
       "prefix": "clab",
       "mgmt": {
         "network": "clab",
-        "bridge": "br-fb69d69108dc",
+        "bridge": "br-b50c81b17eed",
         "ipv4-subnet": "172.20.20.0/24",
         "ipv4-gw": "172.20.20.1",
         "ipv6-subnet": "3fff:172:20:20::/64",
@@ -28,13 +28,13 @@
       "image": "alpine:latest",
       "mgmt-net": "",
       "mgmt-intf": "",
-      "mgmt-ipv4-address": "172.20.20.3",
+      "mgmt-ipv4-address": "172.20.20.2",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-address": "3fff:172:20:20::2",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-fb69d69108dc",
+        "clab-mgmt-net-bridge": "br-b50c81b17eed",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h1",
@@ -46,6 +46,18 @@
         "containerlab": "lab"
       },
       "port-bindings": [
+        {
+          "host-ip": "0.0.0.0",
+          "host-port": 2224,
+          "port": 22,
+          "protocol": "tcp"
+        },
+        {
+          "host-ip": "::",
+          "host-port": 2224,
+          "port": 22,
+          "protocol": "tcp"
+        }
       ]
     },
     "h2": {
@@ -59,13 +71,13 @@
       "image": "alpine:latest",
       "mgmt-net": "",
       "mgmt-intf": "",
-      "mgmt-ipv4-address": "172.20.20.4",
+      "mgmt-ipv4-address": "172.20.20.3",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::4",
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-fb69d69108dc",
+        "clab-mgmt-net-bridge": "br-b50c81b17eed",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h2",
@@ -77,6 +89,18 @@
         "containerlab": "lab"
       },
       "port-bindings": [
+        {
+          "host-ip": "0.0.0.0",
+          "host-port": 2225,
+          "port": 22,
+          "protocol": "tcp"
+        },
+        {
+          "host-ip": "::",
+          "host-port": 2225,
+          "port": 22,
+          "protocol": "tcp"
+        }
       ]
     },
     "h3": {
@@ -90,13 +114,13 @@
       "image": "alpine:latest",
       "mgmt-net": "",
       "mgmt-intf": "",
-      "mgmt-ipv4-address": "172.20.20.2",
+      "mgmt-ipv4-address": "172.20.20.4",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::2",
+      "mgmt-ipv6-address": "3fff:172:20:20::4",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-fb69d69108dc",
+        "clab-mgmt-net-bridge": "br-b50c81b17eed",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h3",
@@ -108,6 +132,18 @@
         "containerlab": "lab"
       },
       "port-bindings": [
+        {
+          "host-ip": "0.0.0.0",
+          "host-port": 2226,
+          "port": 22,
+          "protocol": "tcp"
+        },
+        {
+          "host-ip": "::",
+          "host-port": 2226,
+          "port": 22,
+          "protocol": "tcp"
+        }
       ]
     },
     "r1": {
@@ -127,7 +163,7 @@
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-fb69d69108dc",
+        "clab-mgmt-net-bridge": "br-b50c81b17eed",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/r1",
@@ -160,13 +196,13 @@
         "a": {
           "node": "r1",
           "interface": "eth1",
-          "mac": "aa:c1:ab:e4:b9:16",
+          "mac": "aa:c1:ab:14:f0:e6",
           "peer": "z"
         },
         "z": {
           "node": "h1",
           "interface": "eth1",
-          "mac": "aa:c1:ab:21:a8:ec",
+          "mac": "aa:c1:ab:16:97:17",
           "peer": "a"
         }
       }
@@ -176,13 +212,13 @@
         "a": {
           "node": "r1",
           "interface": "eth2",
-          "mac": "aa:c1:ab:56:a6:b7",
+          "mac": "aa:c1:ab:5c:eb:86",
           "peer": "z"
         },
         "z": {
           "node": "h2",
           "interface": "eth1",
-          "mac": "aa:c1:ab:2b:38:b4",
+          "mac": "aa:c1:ab:33:ff:99",
           "peer": "a"
         }
       }
@@ -192,13 +228,13 @@
         "a": {
           "node": "r1",
           "interface": "eth3",
-          "mac": "aa:c1:ab:da:9d:59",
+          "mac": "aa:c1:ab:e3:5d:74",
           "peer": "z"
         },
         "z": {
           "node": "h3",
           "interface": "eth1",
-          "mac": "aa:c1:ab:2f:13:a9",
+          "mac": "aa:c1:ab:33:41:19",
           "peer": "a"
         }
       }

@@ -3,23 +3,26 @@ from dataclasses import dataclass
 from typing import List
 from ssh_connection import setup_connection, close_connection, execute_command
 from retrieve_network import retrieve_network_as_json, update_network
+from tests.test_icmp import test_icmp
 
 @dataclass
 class Node:
     nome: str
     ip: str
     nexthop: str
+    porta: int
 
     def to_dict(self):
         return {
             "nome": self.nome,
             "ip": self.ip,
-            "nexthop": self.nexthop
+            "nexthop": self.nexthop,
+            "porta": self.porta
         }
     
     def __eq__(self, value):
         if isinstance(value, Node):
-            return self.nome == value.nome and self.ip == value.ip and self.nexthop == value.nexthop
+            return self.nome == value.nome and self.ip == value.ip and self.nexthop == value.nexthop and self.porta == value.porta
         return False
 
 #class Subnet:
@@ -82,6 +85,12 @@ class Policy:
             return self.src_node == value.src_node and self.dest_node == value.dest_node and self.line_number == value.line_number and self.protocollo == value.protocollo and self.target == value.target
         return False
 
+    def test(self, type: str):
+        import subprocess
+        rule = json.dumps(self.to_dict())
+        result = subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], capture_output=True, text=True)
+        print(result.stdout)
+
 @dataclass
 class Router:
     nome: str
@@ -106,21 +115,29 @@ class Router:
 
         index = len(self.policies)
 
-        ip_new_source = ip_network(new_policy.src_node.ip, strict=False)
-        ip_new_dest = ip_network(new_policy.dest_node.ip, strict=False)
+        if new_policy.src_node is not None:
+            ip_new_source = ip_network(new_policy.src_node.ip, strict=False)
+        else:
+            ip_new_source = ip_network("0.0.0.0/0", strict=False)
+        if new_policy.dest_node is not None:
+            ip_new_dest = ip_network(new_policy.dest_node.ip, strict=False)
+        else:
+            ip_new_dest = ip_network("0.0.0.0/0", strict=False)            
 
         for p in same_source:
-            ip_dest = ip_network(p.dest_node.ip)
-            if ip_new_dest.subnet_of(ip_dest):
-                index = int(p.line_number) - 1
-                break
+            if p.protocollo == new_policy.protocollo:
+                ip_dest = ip_network(p.dest_node.ip)
+                if ip_new_dest.subnet_of(ip_dest):
+                    index = int(p.line_number) - 1
+                    break
         
         for p in same_dest:
-            ip_source = ip_network(p.src_node.ip)
-            if int(p.line_number)  > index + 1:
-                break
-            elif ip_new_source.subnet_of(ip_source):
-                index = int(p.line_number) - 1
+            if p.protocollo == new_policy.protocollo:
+                ip_source = ip_network(p.src_node.ip)
+                if int(p.line_number)  > index + 1:
+                    break
+                elif ip_new_source.subnet_of(ip_source):
+                    index = int(p.line_number) - 1
         
         
         
@@ -131,6 +148,7 @@ class Router:
         self.connect()
         command = new_policy.command("I")
         stdin, stdout, stderr = self.execute(command)
+        new_policy.test("insert")
         print(stderr.read().decode())
         self.close()
 
@@ -156,6 +174,7 @@ class Router:
             self.execute(command=f"bash -c 'sudo iptables -D FORWARD " + to_remove.line_number +"'")
             self.close()
             self.policies.remove(to_remove)
+            to_remove.test("remove")
         self.save()
 
     def replace_policy(self, number, new_policy: Policy):

@@ -3,34 +3,40 @@
         {
             "nome": "LAN1",
             "ip": "192.168.10.0/24",
-            "nexthop": "Router1"
+            "nexthop": "Router1",
+            "porta": 2224
         },
         {
             "nome": "LAN2",
             "ip": "192.168.20.0/24",
-            "nexthop": "Router1"
+            "nexthop": "Router1",
+            "porta": 2225
         },
         {
             "nome": "LAN3",
             "ip": "192.168.30.0/24",
-            "nexthop": "Router1"
+            "nexthop": "Router1",
+            "porta": 2226
         }
     ],
     "nodi": [
         {
             "nome": "Host1",
             "ip": "192.168.10.2",
-            "nexthop": "Router1"
+            "nexthop": "Router1",
+            "porta": 2224
         },
         {
             "nome": "Host2",
             "ip": "192.168.20.2",
-            "nexthop": "Router1"
+            "nexthop": "Router1",
+            "porta": 2225
         },
         {
             "nome": "Host3",
             "ip": "192.168.30.2",
-            "nexthop": "Router1"
+            "nexthop": "Router1",
+            "porta": 2226
         }
     ],
     "router": [
@@ -42,31 +48,18 @@
                     "src_node": {
                         "nome": "Host1",
                         "ip": "192.168.10.2",
-                        "nexthop": "Router1"
+                        "nexthop": "Router1",
+                        "porta": 2224
                     },
                     "dest_node": {
                         "nome": "Host3",
                         "ip": "192.168.30.2",
-                        "nexthop": "Router1"
+                        "nexthop": "Router1",
+                        "porta": 2226
                     },
                     "protocollo": "",
                     "target": "DROP",
                     "line_number": "1"
-                },
-                {
-                    "src_node": {
-                        "nome": "LAN2",
-                        "ip": "192.168.20.0/24",
-                        "nexthop": "Router1"
-                    },
-                    "dest_node": {
-                        "nome": "Host1",
-                        "ip": "192.168.10.2",
-                        "nexthop": "Router1"
-                    },
-                    "protocollo": "",
-                    "target": "DROP",
-                    "line_number": "2"
                 }
             ]
         }
