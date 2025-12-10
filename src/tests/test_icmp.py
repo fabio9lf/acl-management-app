@@ -1,12 +1,14 @@
-import subprocess
+from ssh_connection import *
 
 def test_icmp(rule, type):
-    #client = ssh_connection.setup_connection(source_port)
-    #command = f"sh -c 'sudo ping -c3 {dest_addr}'"
-    #stdin, stdout, stderr = ssh_connection.execute_command(client, command=command)
+    client = setup_connection(rule["src_node"]["mgmnt_ip"], "root", "root")
+    command = "sh -c 'sudo ping -c3 " + rule["dest_node"]["ip"]  + "'"
+    stdin, stdout, stderr = execute_command(client, command=command)
 
-    result = subprocess.run(["docker", "exec", "-it", "clab-lab-h1", "sh", "-c", "ping", "-c3", rule["dest_node"]["ip"]], capture_output=True, text=True)
-    stdout = result.stdout
+    close_connection(client=client)
+
+#    result = subprocess.run(["docker", "exec", "-it", "clab-lab-h1", "sh", "-c", "ping", "-c3", rule["dest_node"]["ip"]], capture_output=True, text=True)
+#    stdout = result.stdout
     if rule["target"] == "DROP":
         if type["nome"] == "insert":
             assert "0 received" in stdout or "failed" in stdout or "Connection refused" not in stdout

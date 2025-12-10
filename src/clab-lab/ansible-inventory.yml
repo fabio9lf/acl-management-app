@@ -8,10 +8,10 @@ all:
     linux:
       hosts:
         clab-lab-h1:
-          ansible_host: 172.20.20.2
-        clab-lab-h2:
-          ansible_host: 172.20.20.3
-        clab-lab-h3:
           ansible_host: 172.20.20.4
+        clab-lab-h2:
+          ansible_host: 172.20.20.2
+        clab-lab-h3:
+          ansible_host: 172.20.20.3
         clab-lab-r1:
           ansible_host: 172.20.20.5

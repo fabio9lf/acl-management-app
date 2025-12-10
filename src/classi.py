@@ -1,28 +1,27 @@
 import json
 from dataclasses import dataclass
 from typing import List
-from ssh_connection import setup_connection, close_connection, execute_command
+from tests.ssh_connection import setup_connection, close_connection, execute_command
 from retrieve_network import retrieve_network_as_json, update_network
-from tests.test_icmp import test_icmp
 
 @dataclass
 class Node:
     nome: str
     ip: str
     nexthop: str
-    porta: int
+    mgmnt_ip: str
 
     def to_dict(self):
         return {
             "nome": self.nome,
             "ip": self.ip,
             "nexthop": self.nexthop,
-            "porta": self.porta
+            "mgmnt_ip": self.mgmnt_ip
         }
     
     def __eq__(self, value):
         if isinstance(value, Node):
-            return self.nome == value.nome and self.ip == value.ip and self.nexthop == value.nexthop and self.porta == value.porta
+            return self.nome == value.nome and self.ip == value.ip and self.nexthop == value.nexthop and self.mgmnt_ip == value.mgmnt_ip
         return False
 
 #class Subnet:
@@ -87,19 +86,25 @@ class Policy:
 
     def test(self, type: str):
         import subprocess
+
         rule = json.dumps(self.to_dict())
-        result = subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], capture_output=True, text=True)
+        if self.protocollo == "tcp":
+            result = subprocess.run(["pytest", "tests/test_tcp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], capture_output=True, text=True)
+        elif self.protocollo == "udp":
+            result = subprocess.run(["pytest", "tests/test_udp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], capture_output=True, text=True)
+        else:
+            result = subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], capture_output=True, text=True)
         print(result.stdout)
 
 @dataclass
 class Router:
     nome: str
-    porta: int
+    mgmnt_ip: str
     policies: list[Policy]
     client: any
 
     def connect(self):
-        self.client = setup_connection(self.porta) 
+        self.client = setup_connection(self.mgmnt_ip) 
     def close(self):
         close_connection(client=self.client)
     def execute(self, command):
@@ -199,7 +204,7 @@ class Router:
     def to_dict(self):
         return {
             "nome": self.nome,
-            "porta": self.porta,
+            "mgmnt_ip": self.mgmnt_ip,
             "policy": [p.to_dict() for p in self.policies]
         }
 
@@ -219,7 +224,7 @@ class Network:
             routers=[
                 Router(
                     nome=r["nome"],
-                    porta=r["porta"],
+                    mgmnt_ip=r["mgmnt_ip"],
                     policies=[
                         Policy(
                             src_node=Node(**p["src_node"]) if isinstance(p["src_node"], dict) else p["src_node"],

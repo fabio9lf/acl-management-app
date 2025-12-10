@@ -1,12 +1,11 @@
 
 import paramiko
-def setup_connection(porta=2223, username="admin", password="cisco") -> paramiko.SSHClient:
+def setup_connection(ip="172.20.20.5", username="admin", password="cisco") -> paramiko.SSHClient:
     
-    hostname = "localhost"
 
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(hostname=hostname, port=porta, username=username, password=password)
+    client.connect(hostname=ip, username=username, password=password)
     return client
 
 def close_connection(client: paramiko.SSHClient):
