@@ -1,7 +1,7 @@
-from flask import jsonify, render_template, Flask, request
-from classi import Network, Policy
+from flask import render_template, Flask, request
+from network import Network
+from policy import Policy
 from retrieve_network import retrieve_network_as_json
-import json
 
 app = Flask(__name__)
 
@@ -30,9 +30,11 @@ def aggiungi():
         policy = Policy(source, dest, protocollo, target, "0")
         if router is not None:
             router.insert_policy(policy)
+            network.update_router_by_name(router)
         else:
             for r in network.routers:
                 r.insert_policy(policy)
+                network.update_router_by_name(r)
     return retrieve_network_as_json()
 
 @app.route("/rimuovi", methods=["GET"])
@@ -43,6 +45,7 @@ def rimuovi():
     router = network.find_node_by_name(router_name)
     print(router_name)
     router.remove_policy(line_number)
+    network.update_router_by_name(router)
     return retrieve_network_as_json()
 
 @app.route("/replace", methods=["GET", "POST"])
@@ -65,7 +68,7 @@ def replace():
         policy = Policy(source, dest, protocollo, target, line_number)
         router.replace_policy(line_number, policy)
         line_number = str(int(line_number) + 1)
-
+    network.update_router_by_name(router)
     return retrieve_network_as_json()
 
 @app.route("/reload", methods=["GET", "POST"])
