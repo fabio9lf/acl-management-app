@@ -52,6 +52,7 @@ def replace():
 
     data = request.get_json()
 
+    network = Network.from_json(retrieve_network_as_json())
     source = network.find_node_by_name(data["source"])
     dest = network.find_node_by_name(data["dest"])
     protocolli = [p.strip() for p in data["protocolli"].split(", ")]
@@ -63,7 +64,7 @@ def replace():
     for protocollo in protocolli:
         policy = Policy(source, dest, protocollo, target, line_number)
         router.replace_policy(line_number, policy)
-        line_number = str(int(line_number + 1))
+        line_number = str(int(line_number) + 1)
 
     return retrieve_network_as_json()
 

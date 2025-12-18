@@ -122,8 +122,8 @@ document.addEventListener("click", function(){
 
 document.getElementById("elimina").addEventListener("click",() => {
     if(selectedRow){
-        router_name = selectedRow.cells[0].innerText;
-        line_number = selectedRow.cells[5].innerText;
+        let router_name = selectedRow.cells[0].innerText;
+        let line_number = selectedRow.cells[5].innerText;
 
         fetch(`/rimuovi?line_number=${encodeURIComponent(line_number)}&router_name=${encodeURIComponent(router_name)}`)
         .then(res => res.json())
@@ -132,6 +132,52 @@ document.getElementById("elimina").addEventListener("click",() => {
         });
         selectedRow = null;
         menu.style.display = "none";
+    }
+});
+
+let editable = false;
+
+document.getElementById("modifica").addEventListener("click", ()=>{
+    if(selectedRow){
+        for (let i = 3; i < 5; i++) {
+            selectedRow.cells[i].setAttribute("contenteditable", "true");
+        }
+        editable = true;
+    }
+});
+
+document.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter" && selectedRow && editable){
+        e.preventDefault();
+    
+        let router_name = selectedRow.cells[0].innerText;
+        let line_number = selectedRow.cells[5].innerText;
+        let source = selectedRow.cells[1].innerText;
+        let dest = selectedRow.cells[2].innerText;
+        let target = selectedRow.cells[3].innerText;
+        let protocol = selectedRow.cells[4].innerText;
+
+        const policy = {
+            source: source,
+            dest: dest,
+            target: target,
+            protocolli: protocol
+        }
+
+        editable = false;
+        selectedRow = null;
+
+        fetch(`/replace?line_number=${encodeURIComponent(line_number)}&router_name=${encodeURIComponent(router_name)}`,  {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(policy)
+        })
+        .then(response => response.json())
+        .then(data => {
+            ricarica_tabella(data);
+        });
     }
 });
 

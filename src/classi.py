@@ -160,6 +160,10 @@ class Router:
         self.save()
 
     def save(self):
+        self.connect()
+        stdin, stdout, stderr = self.execute(command="bash -c 'sudo iptables-save > /etc/iptables/rules.v4'")
+        print(stderr.read().decode())
+        self.close()
         network = Network.from_json(retrieve_network_as_json())
         network.update_router_by_name(self)
 
@@ -188,17 +192,23 @@ class Router:
             return
         
         new_policy.line_number = number
-        number = int(number)
+        int_number = int(number)
 
         for i, policy in enumerate(self.policies):
             temp = int(policy.line_number)
-            if number == temp:
+            if int_number == temp:
+                removed = self.policies[i]
                 self.policies[i] = new_policy
+                
 
         self.connect()
         command = new_policy.command("R")
         self.execute(command=command)
         self.close()
+
+        removed.test("remove")
+        new_policy.test("insert")
+
         self.save()
         
     def to_dict(self):

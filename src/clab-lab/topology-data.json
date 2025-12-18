@@ -6,7 +6,7 @@
       "prefix": "clab",
       "mgmt": {
         "network": "clab",
-        "bridge": "br-a0e3a54c0854",
+        "bridge": "br-0e79d5d1e8b1",
         "ipv4-subnet": "172.20.20.0/24",
         "ipv4-gw": "172.20.20.1",
         "ipv6-subnet": "3fff:172:20:20::/64",
@@ -28,13 +28,13 @@
       "image": "alpine-ssh:latest",
       "mgmt-net": "",
       "mgmt-intf": "",
-      "mgmt-ipv4-address": "172.20.20.4",
+      "mgmt-ipv4-address": "172.20.20.3",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::4",
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-a0e3a54c0854",
+        "clab-mgmt-net-bridge": "br-0e79d5d1e8b1",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h1",
@@ -65,13 +65,13 @@
       "image": "alpine-ssh:latest",
       "mgmt-net": "",
       "mgmt-intf": "",
-      "mgmt-ipv4-address": "172.20.20.2",
+      "mgmt-ipv4-address": "172.20.20.4",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::2",
+      "mgmt-ipv6-address": "3fff:172:20:20::5",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-a0e3a54c0854",
+        "clab-mgmt-net-bridge": "br-0e79d5d1e8b1",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h2",
@@ -102,13 +102,13 @@
       "image": "alpine-ssh:latest",
       "mgmt-net": "",
       "mgmt-intf": "",
-      "mgmt-ipv4-address": "172.20.20.3",
+      "mgmt-ipv4-address": "172.20.20.5",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-address": "3fff:172:20:20::2",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-a0e3a54c0854",
+        "clab-mgmt-net-bridge": "br-0e79d5d1e8b1",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/h3",
@@ -139,13 +139,13 @@
       "image": "frr-ssh",
       "mgmt-net": "",
       "mgmt-intf": "",
-      "mgmt-ipv4-address": "172.20.20.5",
+      "mgmt-ipv4-address": "172.20.20.2",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::5",
+      "mgmt-ipv6-address": "3fff:172:20:20::4",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-a0e3a54c0854",
+        "clab-mgmt-net-bridge": "br-0e79d5d1e8b1",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/clab-lab/r1",
@@ -172,13 +172,13 @@
         "a": {
           "node": "r1",
           "interface": "eth1",
-          "mac": "aa:c1:ab:c4:6d:c1",
+          "mac": "aa:c1:ab:49:a0:a4",
           "peer": "z"
         },
         "z": {
           "node": "h1",
           "interface": "eth1",
-          "mac": "aa:c1:ab:dd:7f:57",
+          "mac": "aa:c1:ab:48:e3:45",
           "peer": "a"
         }
       }
@@ -188,13 +188,13 @@
         "a": {
           "node": "r1",
           "interface": "eth2",
-          "mac": "aa:c1:ab:47:6e:14",
+          "mac": "aa:c1:ab:ab:6f:08",
           "peer": "z"
         },
         "z": {
           "node": "h2",
           "interface": "eth1",
-          "mac": "aa:c1:ab:87:7b:e2",
+          "mac": "aa:c1:ab:0c:f0:c4",
           "peer": "a"
         }
       }
@@ -204,13 +204,13 @@
         "a": {
           "node": "r1",
           "interface": "eth3",
-          "mac": "aa:c1:ab:55:f7:c9",
+          "mac": "aa:c1:ab:d7:39:e2",
           "peer": "z"
         },
         "z": {
           "node": "h3",
           "interface": "eth1",
-          "mac": "aa:c1:ab:24:c5:45",
+          "mac": "aa:c1:ab:aa:3b:5f",
           "peer": "a"
         }
       }

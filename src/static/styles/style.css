@@ -53,3 +53,6 @@ tbody tr:nth-child(even) {
 table:hover{
     cursor: pointer;
 }
+td[contenteditable="true"] {
+    background-color: #f0f8ff;
+}

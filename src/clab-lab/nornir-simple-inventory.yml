@@ -3,19 +3,19 @@ h1:
     username: 
     password: 
     platform: linux
-    hostname: 172.20.20.4
+    hostname: 172.20.20.3
 h2:
     username: 
     password: 
     platform: linux
-    hostname: 172.20.20.2
+    hostname: 172.20.20.4
 h3:
     username: 
     password: 
     platform: linux
-    hostname: 172.20.20.3
+    hostname: 172.20.20.5
 r1:
     username: 
     password: 
     platform: linux
-    hostname: 172.20.20.5
+    hostname: 172.20.20.2

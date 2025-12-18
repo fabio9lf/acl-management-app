@@ -4,19 +4,19 @@
             "nome": "LAN1",
             "ip": "192.168.10.0/24",
             "nexthop": "Router1",
-            "mgmnt_ip": "172.20.20.4"
+            "mgmnt_ip": "172.20.20.2"
         },
         {
             "nome": "LAN2",
             "ip": "192.168.20.0/24",
             "nexthop": "Router1",
-            "mgmnt_ip": "172.20.20.2"
+            "mgmnt_ip": "172.20.20.5"
         },
         {
             "nome": "LAN3",
             "ip": "192.168.30.0/24",
             "nexthop": "Router1",
-            "mgmnt_ip": "172.20.20.3"
+            "mgmnt_ip": "172.20.20.4"
         }
     ],
     "nodi": [
@@ -24,26 +24,44 @@
             "nome": "Host1",
             "ip": "192.168.10.2",
             "nexthop": "Router1",
-            "mgmnt_ip": "172.20.20.4"
+            "mgmnt_ip": "172.20.20.3"
         },
         {
             "nome": "Host2",
             "ip": "192.168.20.2",
             "nexthop": "Router1",
-            "mgmnt_ip": "172.20.20.2"
+            "mgmnt_ip": "172.20.20.4"
         },
         {
             "nome": "Host3",
             "ip": "192.168.30.2",
             "nexthop": "Router1",
-            "mgmnt_ip": "172.20.20.3"
+            "mgmnt_ip": "172.20.20.5"
         }
     ],
     "router": [
         {
             "nome": "Router1",
-            "mgmnt_ip": "172.20.20.5",
-            "policy": []
+            "mgmnt_ip": "172.20.20.2",
+            "policy": [
+                {
+                    "src_node": {
+                        "nome": "Host1",
+                        "ip": "192.168.10.2",
+                        "nexthop": "Router1",
+                        "mgmnt_ip": "172.20.20.3"
+                    },
+                    "dest_node": {
+                        "nome": "Host2",
+                        "ip": "192.168.20.2",
+                        "nexthop": "Router1",
+                        "mgmnt_ip": "172.20.20.4"
+                    },
+                    "protocollo": "udp",
+                    "target": "DROP",
+                    "line_number": "1"
+                }
+            ]
         }
     ]
 }
