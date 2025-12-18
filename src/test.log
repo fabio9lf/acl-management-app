@@ -1,0 +1,151 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della insert della policy con DROP dei pacchetti da Host1 (192.168.10.2) a Host2 (192.168.20.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_udp.py .                                                      [100%]
+
+============================== 1 passed in 0.58s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della remove della policy con DROP dei pacchetti di tipo udp da Host1 (192.168.10.2) a Host2 (192.168.20.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_udp.py F                                                      [100%]
+
+=================================== FAILURES ===================================
+___________________________________ test_udp ___________________________________
+
+rule = {'dest_node': {'ip': '192.168.20.2', 'mgmnt_ip': '172.20.20.4', 'nexthop': 'Router1', 'nome': 'Host2'}, 'line_number':...llo': 'udp', 'src_node': {'ip': '192.168.10.2', 'mgmnt_ip': '172.20.20.3', 'nexthop': 'Router1', 'nome': 'Host1'}, ...}
+type = {'nome': 'remove'}
+
+    def test_udp(rule, type):
+        client_dest = setup_connection(rule["dest_node"]["mgmnt_ip"], "root", "root")
+    
+        command = f"sh -c 'nc -u -l -p 5000 > /tmp/udp_received.log &'"
+        execute_command(client_dest, command)
+    
+        client_src = setup_connection(rule["src_node"]["mgmnt_ip"], "root", "root")
+    
+        command = "sh -c 'printf \"test\" | nc -u -w1 " +  rule['dest_node']['ip'] + " 5000'"
+        execute_command(client_src, command)
+    
+        stdin, stdout, stderr = execute_command(client_dest, "sh -c 'cat /tmp/udp_received.log'")
+        output = stdout.read().decode()
+    
+    
+        close_connection(client_src)
+        close_connection(client_dest)
+    
+        if rule["target"] == "ACCEPT":
+            if type["nome"] == "insert":
+                assert "test" in output
+            else:
+                assert "" in output
+        else:
+            if type["nome"] == "insert":
+                assert "" in output
+            else:
+>               assert "test" in output
+E               AssertionError: assert 'test' in ''
+
+tests/test_udp.py:30: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_udp.py::test_udp - AssertionError: assert 'test' in ''
+============================== 1 failed in 1.08s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della insert della policy con DROP dei pacchetti di tipo tcp da Host2 (192.168.20.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_tcp.py F                                                      [100%]
+
+=================================== FAILURES ===================================
+___________________________________ test_tcp ___________________________________
+
+rule = {'dest_node': None, 'line_number': '1', 'protocollo': 'tcp', 'src_node': {'ip': '192.168.20.2', 'mgmnt_ip': '172.20.20.4', 'nexthop': 'Router1', 'nome': 'Host2'}, ...}
+type = {'nome': 'insert'}
+
+    def test_tcp(rule, type):
+>       client_dest = setup_connection(rule["dest_node"]["mgmnt_ip"], "root", "root")
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests/test_tcp.py:5: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_tcp.py::test_tcp - TypeError: 'NoneType' object is not subs...
+============================== 1 failed in 0.26s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della insert della policy con DROP dei pacchetti di tipo tcp da Host1 (192.168.10.2) a Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_tcp.py .                                                      [100%]
+
+============================== 1 passed in 3.51s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della insert della policy con DROP dei pacchetti di tipo  da Host2 (192.168.20.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_icmp.py .                                                     [100%]
+
+============================== 1 passed in 0.37s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della insert della policy con DROP dei pacchetti di tipo icmp da Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_icmp.py .                                                     [100%]
+
+============================== 1 passed in 0.39s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della remove della policy con DROP dei pacchetti di tipo icmp da Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_icmp.py .                                                     [100%]
+
+============================== 1 passed in 0.40s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della remove della policy con DROP dei pacchetti di tipo tcp da Host1 (192.168.10.2) a Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_tcp.py .                                                      [100%]
+
+============================== 1 passed in 6.60s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della remove della policy con DROP dei pacchetti di tipo  da Host2 (192.168.20.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_icmp.py .                                                     [100%]
+
+============================== 1 passed in 0.44s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della insert della policy con DROP dei pacchetti di tipo udp da LAN2 (192.168.20.0/24) a Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_udp.py .                                                      [100%]
+
+============================== 1 passed in 0.56s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della remove della policy con DROP dei pacchetti di tipo udp da LAN2 (192.168.20.0/24) a Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_udp.py .                                                      [100%]
+
+============================== 1 passed in 0.54s ===============================

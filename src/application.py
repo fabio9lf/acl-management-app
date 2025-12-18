@@ -1,7 +1,7 @@
 from flask import render_template, Flask, request
-from network import Network
-from policy import Policy
-from retrieve_network import retrieve_network_as_json
+from lib.network import Network
+from lib.policy import Policy
+from lib.retrieve_network import retrieve_network_as_json
 
 app = Flask(__name__)
 

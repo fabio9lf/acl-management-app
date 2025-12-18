@@ -1,7 +1,6 @@
 from dataclasses import dataclass
-from policy import Policy
+from lib.policy import Policy
 from tests.ssh_connection import *
-from retrieve_network import retrieve_network_as_json
 
 @dataclass
 class Router:

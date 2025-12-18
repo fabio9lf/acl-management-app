@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass
-from node import Node
+from lib.node import Node
 
 @dataclass
 class Policy:
@@ -37,10 +37,10 @@ class Policy:
         import subprocess
 
         rule = json.dumps(self.to_dict())
-        if self.protocollo == "tcp":
-            result = subprocess.run(["pytest", "tests/test_tcp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"} > log.txt"], capture_output=True, text=True)
-        elif self.protocollo == "udp":
-            result = subprocess.run(["pytest", "tests/test_udp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], capture_output=True, text=True)
-        else:
-            result = subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], capture_output=True, text=True)
-        print(result.stdout)
+        with open("test.log", "a") as file:
+            if self.protocollo == "tcp":
+                subprocess.run(["pytest", "tests/test_tcp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], stdout=file)
+            elif self.protocollo == "udp":
+                subprocess.run(["pytest", "tests/test_udp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], stdout=file)
+            else:
+                subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], stdout=file)

@@ -1,9 +1,9 @@
-from retrieve_network import update_network
+from lib.retrieve_network import update_network
 from dataclasses import dataclass
 from typing import List
-from node import Node
-from router import Router
-from policy import Policy
+from lib.node import Node
+from lib.router import Router
+from lib.policy import Policy
 
 @dataclass
 class Network:

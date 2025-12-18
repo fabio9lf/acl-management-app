@@ -207,10 +207,12 @@ function ricarica_tabella(data){
 
     data["router"].forEach(r => {
         r["policy"].forEach(p =>{
+            let source = p["src_node"] != null ? p["src_node"]["nome"] : "qualsiasi";
+            let dest = p["dest_node"] != null ? p["dest_node"]["nome"] : "qualsiasi";
             const row = document.createElement("tr");
             row.innerHTML = "<td>" + r["nome"] + "</td><td>" + 
-            p["src_node"]["nome"] + "</td><td>" + 
-            p["dest_node"]["nome"] + "</td><td>" + 
+            source + "</td><td>" + 
+            dest + "</td><td>" + 
             p["target"] + "</td><td>" + p["protocollo"] + "</td><td>" + p["line_number"] + "</td>";
 
             tbody.appendChild(row);
