@@ -38,14 +38,14 @@ class Router:
             ip_new_dest = ip_network("0.0.0.0/0", strict=False)            
 
         for p in same_source:
-            if p.protocollo == new_policy.protocollo:
+            if p.protocollo == new_policy.protocollo or p.protocollo == "":
                 ip_dest = ip_network(p.dest_node.ip)
                 if ip_new_dest.subnet_of(ip_dest):
                     index = int(p.line_number) - 1
                     break
         
         for p in same_dest:
-            if p.protocollo == new_policy.protocollo:
+            if p.protocollo == new_policy.protocollo or p.protocollo == "":
                 ip_source = ip_network(p.src_node.ip)
                 if int(p.line_number)  > index + 1:
                     break

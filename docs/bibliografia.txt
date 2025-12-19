@@ -1,0 +1,24 @@
+-   libreria webbrowser usata per accedere al browser web da script python
+    https://docs.python.org/3/library/webbrowser.html
+
+-   file build-frr-ssh.sh usato per aggiungere ssh all'ultima versione di frr
+    https://github.com/ciscoittech/containerlab-free-labs/blob/main/build-frr-ssh.sh
+
+-   libreria flask usata per la creazione dell'applicazione
+    https://flask.palletsprojects.com/en/stable/
+
+-   libreria pytest usata per i test dell'applicazione
+    https://docs.pytest.org/en/stable/
+
+-   libreria jinja usata per accedere a variabili python da html
+    https://jinja.palletsprojects.com/en/stable/
+
+-   documentazione di containerlab
+    https://containerlab.dev/
+
+-   libreria paramiko usata per effettuare la connessione ssh ai container in python
+    https://docs.paramiko.org/en/stable/
+
+-   librerie dataclasses e typing usate per implementare le classi in maniera tipizzata
+    https://docs.python.org/3/library/dataclasses.html
+    https://docs.python.org/3/library/typing.html
