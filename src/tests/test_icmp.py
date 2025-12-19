@@ -1,7 +1,7 @@
 from ssh_connection import *
 
 def test_icmp(rule, type):
-    client = setup_connection(rule["src_node"]["mgmnt_ip"], "root", "root")
+    client = setup_connection(rule["src_node"]["mgmt_ip"], "root", "root")
     command = "sh -c 'sudo ping -c3 " + rule["dest_node"]["ip"] if rule["dest_node"] is not None else "0.0.0.0"  + "'"
     stdin, stdout, stderr = execute_command(client, command=command)
 

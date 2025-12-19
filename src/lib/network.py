@@ -21,7 +21,7 @@ class Network:
             routers=[
                 Router(
                     nome=r["nome"],
-                    mgmnt_ip=r["mgmnt_ip"],
+                    mgmt_ip=r["mgmt_ip"],
                     policies=[
                         Policy(
                             src_node=Node(**p["src_node"]) if isinstance(p["src_node"], dict) else p["src_node"],

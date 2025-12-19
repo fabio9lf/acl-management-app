@@ -1,16 +1,18 @@
 from dataclasses import dataclass
 from lib.policy import Policy
 from tests.ssh_connection import *
+import threading
+from lib.thread_sync import first, second
 
 @dataclass
 class Router:
     nome: str
-    mgmnt_ip: str
+    mgmt_ip: str
     policies: list[Policy]
     client: any
 
     def connect(self):
-        self.client = setup_connection(self.mgmnt_ip) 
+        self.client = setup_connection(self.mgmt_ip) 
     def close(self):
         close_connection(client=self.client)
     def execute(self, command):
@@ -59,7 +61,7 @@ class Router:
         self.connect()
         command = new_policy.command("I")
         stdin, stdout, stderr = self.execute(command)
-        new_policy.test("insert")
+        threading.Thread(target=new_policy.test, args=("insert",)).start()
         print(stderr.read().decode())
         self.close()
 
@@ -87,7 +89,7 @@ class Router:
             self.execute(command=f"bash -c 'sudo iptables -D FORWARD " + to_remove.line_number +"'")
             self.close()
             self.policies.remove(to_remove)
-            to_remove.test("remove")
+            threading.Thread(target=to_remove.test, args=("remove",)).start()
         self.save()
 
     def replace_policy(self, number, new_policy: Policy):
@@ -110,14 +112,18 @@ class Router:
         self.execute(command=command)
         self.close()
 
-        removed.test("remove")
-        new_policy.test("insert")
+        first_done = threading.Event()
+
+        threading.Thread(target=first, args=(first_done, removed.test, "remove",)).start()
+        threading.Thread(target=second, args=(first_done, new_policy.test, "insert",)).start()
+        #removed.test("remove")
+        #new_policy.test("insert")
 
         self.save()
         
     def to_dict(self):
         return {
             "nome": self.nome,
-            "mgmnt_ip": self.mgmnt_ip,
+            "mgmt_ip": self.mgmt_ip,
             "policy": [p.to_dict() for p in self.policies]
         }

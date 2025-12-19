@@ -1,18 +1,27 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
-Test della remove della policy con DROP dei pacchetti ip da LAN1 (192.168.10.0/24) a LAN3 (192.168.30.0/24)
-rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
-collected 1 item
-
-tests/test_icmp.py .                                                     [100%]
-
-============================== 1 passed in 0.50s ===============================
-============================= test session starts ==============================
-platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
-Test della insert della policy con ACCEPT dei pacchetti di tipo udp da Host2 (192.168.20.2) a Host1 (192.168.10.2)
+Test della remove della policy con ACCEPT dei pacchetti di tipo udp da Host2 (192.168.20.2) a Host1 (192.168.10.2)
 rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
 collected 1 item
 
 tests/test_udp.py .                                                      [100%]
 
-============================== 1 passed in 0.64s ===============================
+============================== 1 passed in 0.62s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della remove della policy con DROP dei pacchetti di tipo tcp da Host1 (192.168.10.2) a Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_tcp.py .                                                      [100%]
+
+============================== 1 passed in 6.73s ===============================
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-7.2.1, pluggy-1.0.0+repack
+Test della insert della policy con DROP dei pacchetti di tipo udp da Host1 (192.168.10.2) a Host3 (192.168.30.2)
+rootdir: /home/clab/tesi_LaFalce/src/tests, configfile: pytest.ini
+collected 1 item
+
+tests/test_udp.py .                                                      [100%]
+
+============================== 1 passed in 0.72s ===============================

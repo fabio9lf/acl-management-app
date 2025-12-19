@@ -2,12 +2,12 @@ from ssh_connection import *
 
 
 def test_tcp(rule, type):
-    client_dest = setup_connection(rule["dest_node"]["mgmnt_ip"], "root", "root")
+    client_dest = setup_connection(rule["dest_node"]["mgmt_ip"], "root", "root")
     
     command = f"sh -c 'nc -l -p 5000 &'"
     execute_command(client_dest, command)
     
-    client_src = setup_connection(rule["src_node"]["mgmnt_ip"], "root", "root")
+    client_src = setup_connection(rule["src_node"]["mgmt_ip"], "root", "root")
     command = "sh -c 'nc -v -w3 " +  rule['dest_node']['ip'] + " 5000'"
     stdin, stdout, stderr = execute_command(client_src, command)
 
