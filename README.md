@@ -7,3 +7,6 @@ TO-DO:
   - modifiche interfaccia web:
       * migliorare css
       * cambiare la modalità di replace delle policy (cambiare modifica di target e protocollo da input a select)
+      * disabilitare altre scelte quando viene scelto ip come protocollo
+  - aggiunta di altre topologie
+      * script per la creazione del file network.json partendo dal file di topologia
