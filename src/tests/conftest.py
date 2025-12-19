@@ -18,7 +18,7 @@ def pytest_report_header(config):
     type = json.loads(config.getoption("--type"))
 
     optional = [
-        f"dei pacchetti di tipo {rule['protocollo']}" if rule["protocollo"] is not None else None,
+        f"dei pacchetti di tipo {rule['protocollo']}" if rule["protocollo"] != "" else f"dei pacchetti ip",
         f"da {rule['src_node']['nome']} ({rule['src_node']['ip']})" if rule["src_node"] is not None else None,
         f"a {rule['dest_node']['nome']} ({rule['dest_node']['ip']})" if rule["dest_node"] is not None else None
     ]

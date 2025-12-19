@@ -4,7 +4,7 @@
             "nome": "LAN1",
             "ip": "192.168.10.0/24",
             "nexthop": "Router1",
-            "mgmnt_ip": "172.20.20.2"
+            "mgmnt_ip": "172.20.20.3"
         },
         {
             "nome": "LAN2",
@@ -43,7 +43,42 @@
         {
             "nome": "Router1",
             "mgmnt_ip": "172.20.20.2",
-            "policy": []
+            "policy": [
+                {
+                    "src_node": {
+                        "nome": "Host2",
+                        "ip": "192.168.20.2",
+                        "nexthop": "Router1",
+                        "mgmnt_ip": "172.20.20.4"
+                    },
+                    "dest_node": {
+                        "nome": "Host1",
+                        "ip": "192.168.10.2",
+                        "nexthop": "Router1",
+                        "mgmnt_ip": "172.20.20.3"
+                    },
+                    "protocollo": "udp",
+                    "target": "ACCEPT",
+                    "line_number": "1"
+                },
+                {
+                    "src_node": {
+                        "nome": "LAN2",
+                        "ip": "192.168.20.0/24",
+                        "nexthop": "Router1",
+                        "mgmnt_ip": "172.20.20.5"
+                    },
+                    "dest_node": {
+                        "nome": "Host1",
+                        "ip": "192.168.10.2",
+                        "nexthop": "Router1",
+                        "mgmnt_ip": "172.20.20.3"
+                    },
+                    "protocollo": "udp",
+                    "target": "DROP",
+                    "line_number": "2"
+                }
+            ]
         }
     ]
 }

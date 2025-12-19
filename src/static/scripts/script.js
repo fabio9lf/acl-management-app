@@ -95,7 +95,7 @@ aggiungi.addEventListener("click", ()=>{
     dest_type.selectedIndex = 0;
     aggiorna(dest_type, dest_host, dest_subnet);
     filtro.selectedIndex = 0;
-    protocolli.selectedIndex = -1;
+    protocolli.selectedIndex = 0;
 });
 
 let table = document.querySelector("tbody");
