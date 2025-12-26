@@ -3,63 +3,87 @@
         {
             "nome": "LAN1",
             "ip": "192.168.10.0/24",
-            "nexthop": "Router1",
+            "nexthop": "r1",
             "mgmt_ip": "172.20.20.3"
         },
         {
             "nome": "LAN2",
             "ip": "192.168.20.0/24",
-            "nexthop": "Router1",
-            "mgmt_ip": "172.20.20.5"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         {
             "nome": "LAN3",
             "ip": "192.168.30.0/24",
-            "nexthop": "Router1",
-            "mgmt_ip": "172.20.20.4"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
         }
     ],
     "nodi": [
         {
-            "nome": "Host1",
+            "nome": "h1",
             "ip": "192.168.10.2",
-            "nexthop": "Router1",
+            "nexthop": "r1",
             "mgmt_ip": "172.20.20.3"
         },
         {
-            "nome": "Host2",
+            "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "Router1",
+            "nexthop": "r1",
             "mgmt_ip": "172.20.20.4"
         },
         {
-            "nome": "Host3",
+            "nome": "h3",
             "ip": "192.168.30.2",
-            "nexthop": "Router1",
+            "nexthop": "r1",
             "mgmt_ip": "172.20.20.5"
         }
     ],
     "router": [
         {
-            "nome": "Router1",
+            "nome": "r1",
             "mgmt_ip": "172.20.20.2",
             "policy": [
                 {
-                    "src_node": {
-                        "nome": "Host1",
+                    "src_node": null,
+                    "dest_node": {
+                        "nome": "h1",
                         "ip": "192.168.10.2",
-                        "nexthop": "Router1",
+                        "nexthop": "r1",
+                        "mgmt_ip": "172.20.20.3"
+                    },
+                    "protocollo": "",
+                    "target": "DROP",
+                    "line_number": "1"
+                },
+                {
+                    "src_node": null,
+                    "dest_node": {
+                        "nome": "h1",
+                        "ip": "192.168.10.2",
+                        "nexthop": "r1",
+                        "mgmt_ip": "172.20.20.3"
+                    },
+                    "protocollo": "",
+                    "target": "DROP",
+                    "line_number": "2"
+                },
+                {
+                    "src_node": {
+                        "nome": "LAN1",
+                        "ip": "192.168.10.0/24",
+                        "nexthop": "r1",
                         "mgmt_ip": "172.20.20.3"
                     },
                     "dest_node": {
-                        "nome": "LAN2",
-                        "ip": "192.168.20.0/24",
-                        "nexthop": "Router1",
-                        "mgmt_ip": "172.20.20.5"
+                        "nome": "h2",
+                        "ip": "192.168.20.2",
+                        "nexthop": "r1",
+                        "mgmt_ip": "172.20.20.4"
                     },
-                    "protocollo": "tcp",
+                    "protocollo": "udp",
                     "target": "DROP",
-                    "line_number": "1"
+                    "line_number": "3"
                 }
             ]
         }

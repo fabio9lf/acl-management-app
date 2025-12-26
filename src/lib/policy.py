@@ -33,10 +33,16 @@ class Policy:
             return self.src_node == value.src_node and self.dest_node == value.dest_node and self.line_number == value.line_number and self.protocollo == value.protocollo and self.target == value.target
         return False
 
-    def test(self, type: str):
+    def test(self, type: str, new_src: Node = None, new_dest: Node = None):
         import subprocess
 
-        rule = json.dumps(self.to_dict())
+        policy = self
+        if self.src_node is None:
+            policy.src_node = new_src
+        if self.dest_node is None:
+            policy.dest_node = new_dest
+        rule = json.dumps(policy.to_dict())
+        
         with open("test.log", "a") as file:
             if self.protocollo == "tcp":
                 subprocess.run(["pytest", "tests/test_tcp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], stdout=file)

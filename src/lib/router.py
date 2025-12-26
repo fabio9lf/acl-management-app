@@ -39,14 +39,14 @@ class Router:
 
         for p in same_source:
             if p.protocollo == new_policy.protocollo or p.protocollo == "":
-                ip_dest = ip_network(p.dest_node.ip)
+                ip_dest = ip_network(p.dest_node.ip, strict=False) if p.dest_node is not None else ip_network("0.0.0.0/0", strict=False)
                 if ip_new_dest.subnet_of(ip_dest):
                     index = int(p.line_number) - 1
                     break
         
         for p in same_dest:
             if p.protocollo == new_policy.protocollo or p.protocollo == "":
-                ip_source = ip_network(p.src_node.ip)
+                ip_source = ip_network(p.src_node.ip, strict=False) if p.src_node is not None else ip_network("0.0.0.0/0", strict=False)
                 if int(p.line_number)  > index + 1:
                     break
                 elif ip_new_source.subnet_of(ip_source):
@@ -61,8 +61,6 @@ class Router:
         self.connect()
         command = new_policy.command("I")
         stdin, stdout, stderr = self.execute(command)
-        threading.Thread(target=new_policy.test, args=("insert",)).start()
-        print(stderr.read().decode())
         self.close()
 
         self.save()
@@ -73,7 +71,7 @@ class Router:
         print(stderr.read().decode())
         self.close()
 
-    def remove_policy(self, number):
+    def remove_policy(self, number) -> Policy:
         number = int(number)
 
         to_remove = None
@@ -89,10 +87,10 @@ class Router:
             self.execute(command=f"bash -c 'sudo iptables -D FORWARD " + to_remove.line_number +"'")
             self.close()
             self.policies.remove(to_remove)
-            threading.Thread(target=to_remove.test, args=("remove",)).start()
         self.save()
+        return to_remove
 
-    def replace_policy(self, number, new_policy: Policy):
+    def replace_policy(self, number, new_policy: Policy) -> Policy:
         if not new_policy:
             self.remove_policy(number)
             return
@@ -112,15 +110,10 @@ class Router:
         self.execute(command=command)
         self.close()
 
-        first_done = threading.Event()
-
-        threading.Thread(target=first, args=(first_done, removed.test, "remove",)).start()
-        threading.Thread(target=second, args=(first_done, new_policy.test, "insert",)).start()
-        #removed.test("remove")
-        #new_policy.test("insert")
-
         self.save()
-        
+
+        return removed
+            
     def to_dict(self):
         return {
             "nome": self.nome,
