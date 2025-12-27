@@ -83,12 +83,27 @@ def parse_policy(network : dict, path):
                     pattern = r"-(s|d|p|j)\s+(\S+)"
                     matches = re.findall(pattern, line)
                     regola = {key: val for key, val in matches}
-                    source_ip = str(regola.get("s")).split("/")[0]
-                    dest_ip = str(regola.get("d")).split("/")[0]
+                    print(str(regola.get("s")).split("/"))
+                    try:
+                        source_ip, source_prefix = str(regola.get("s")).split("/")
+                    except ValueError:
+                        source_ip = None
+                        source_prefix = "0"
+                    try:
+                        dest_ip, dest_prefix = str(regola.get("d")).split("/")
+                    except ValueError:
+                        dest_ip = None
+                        dest_prefix = "0"
                     proto = regola.get("p") if regola.get("p") is not None else ""
                     target = regola.get("j")
-                    src_node = next((node for node in network["nodi"] if node.get("ip") == source_ip), None)
-                    dest_node = next((node for node in network["nodi"] if node.get("ip") == dest_ip), None)
+                    if source_prefix == "32":
+                        src_node = next((node for node in network["nodi"] if node.get("ip") == source_ip), None) 
+                    else:
+                        src_node = next((subnet for subnet in network["sottoreti"] if subnet.get("ip") == str(regola.get("s"))), None)
+                    if dest_prefix == "32":
+                        dest_node = next((node for node in network["nodi"] if node.get("ip") == dest_ip), None)
+                    else:
+                        dest_node = next((subnet for subnet in network["sottoreti"] if subnet.get("ip") == str(regola.get("d"))), None)
                     policy = {
                         "src_node": src_node,
                         "dest_node": dest_node,
