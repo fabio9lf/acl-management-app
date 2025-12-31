@@ -75,10 +75,9 @@
                     <select name="protocolli[]" id="protocolli" multiple size="1">
                         <!--<option value="http">http</option> -->
                         <option value="" selected>ip</option>
-                        <option value="tcp">tcp</option>
-                        <option value="udp">udp</option>
-                        <option value="icmp">icmp</option>
-                        <!--<option value="ospf">ospf</option> -->
+                        <option value="tcp" selected disabled>tcp</option>
+                        <option value="udp" selected disabled>udp</option>
+                        <option value="icmp" selected disabled>icmp</option>
                     </select>
                 </div>
             </div>
@@ -121,16 +120,20 @@
                     <tr>
                         <td>{{router.nome}}</td>
                         <td>
-                            {{policy.src_node.nome}}
+                            {{policy.src_node.nome | default("qualsiasi")}}
                         </td>
                         <td>
-                            {{policy.dest_node.nome}}
+                            {{policy.dest_node.nome | default("qualsiasi")}}
                         </td>
                         <td>
                             {{policy.target}}
                         </td>
                         <td>
-                            {{policy.protocollo}}
+                            {% if policy.protocollo == "" %}
+                                ip
+                            {% else %}
+                                {{policy.protocollo}}
+                            {% endif %}
                         </td>
                         <td>
                             {{policy.line_number}}

@@ -138,8 +138,8 @@ class Network:
         for protocollo in protocolli:
             policy = Policy(source, dest, protocollo, target, line_number)
             removed = router.replace_policy(line_number, policy)
-            threading.Thread(target=first, args=(first_done, self.test_policy, removed, "remove",)).start()
-            threading.Thread(target=second, args=(first_done, self.test_policy, policy, "insert",)).start()
+            threading.Thread(target=first, args=(first_done, self.test_policy, (removed, "remove"),)).start()
+            threading.Thread(target=second, args=(first_done, self.test_policy, (policy, "insert"),)).start()
             line_number = str(int(line_number) + 1)
         self.update_router_by_name(router)
 

@@ -1,16 +1,11 @@
-Per far partire l'applicazione eseguire il file acl-app.sh
+Per far partire l'applicazione eseguire il file acl-app.sh passando come argomento la cartella contenente il file di topologia
 I risultati dei test vengono salvati nel file test.log
 
 TO-DO:
-  - fix dei test con netcat quando ip sorgente e/o destinazione sono 0.0.0.0
-  - fix dei test con ping quando ip sorgente è 0.0.0.0
   - fix dei test con ping/netcat quando c'è un'altra policy che altera l'esito del test
   - modifiche interfaccia web:
       * migliorare css
-      * cambiare la modalità di replace delle policy (cambiare modifica di target e protocollo da input a select)
-      * disabilitare altre scelte quando viene scelto ip come protocollo
   - aggiunta di altre topologie
-      * script per la creazione del file network.json partendo dal file di topologia
 
 NOTA:
   - Potrebbero esserci dei problemi nell'apertura automatica del browser in quanto ho testato solamente ambiente wsl e ubuntu

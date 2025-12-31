@@ -22,6 +22,29 @@ dest_type.addEventListener("change", ()=>{
     aggiorna(dest_type, dest_host, dest_subnet);
 });
 
+let ip_sel = true;
+protocolli.addEventListener("change", ()=>{
+    const options = Array.from(protocolli.options);
+    const ip = options.find(o => o.value === "");
+
+    if (ip.selected) {
+        ip_sel = true;
+        options.forEach(o => {
+            o.selected = true;
+            if (o.value !== "") {
+                o.disabled = true;
+            }
+        });
+    } else {
+        options.forEach(o => {
+            if(ip_sel)
+                o.selected = false;
+            o.disabled = false;
+        });
+        ip_sel = false;
+    }
+});
+
 aggiungi.addEventListener("click", ()=>{
     let source, dest;
     if(source_type.value == "host"){
@@ -143,13 +166,26 @@ document.getElementById("modifica").addEventListener("click", ()=>{
             selectedRow.cells[i].setAttribute("contenteditable", "true");
         }
         editable = true;
+
+        let td = selectedRow.cells[4];
+        let select = crea_select(td.innerText, "proto");
+        td.innerText = "";
+        td.appendChild(select);
+
+        td = selectedRow.cells[3];
+        select = crea_select(td.innerText, "target");
+        td.innerText = "";
+        td.appendChild(select)
     }
 });
 
 document.addEventListener("keydown", (e)=>{
     if(e.key === "Enter" && selectedRow && editable){
         e.preventDefault();
-    
+        
+        selectedRow.cells[4].innerText = selectedRow.cells[4].children[0].value;
+        selectedRow.cells[3].innerText = selectedRow.cells[3].children[0].value;
+        
         let router_name = selectedRow.cells[0].innerText;
         let line_number = selectedRow.cells[5].innerText;
         let source = selectedRow.cells[1].innerText;
@@ -218,4 +254,28 @@ function ricarica_tabella(data){
             tbody.appendChild(row);
         });
     });
+}
+
+function crea_select(value, tipo){
+    const select = document.createElement("select");
+
+    const protocolli = ["ip", "udp", "tcp", "icmp"];
+    const target = ["ACCEPT", "DROP"];
+    let options;
+
+    if(tipo === "proto"){
+        options = protocolli;
+    }
+    else{
+        options = target;
+    }
+
+    options.forEach(p =>{
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = p;
+        if(p === value) opt.selected = true;
+        select.appendChild(opt);
+    });
+    return select;
 }
