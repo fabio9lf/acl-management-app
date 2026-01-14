@@ -68,30 +68,33 @@ class Network:
 
     def save(self):
         update_network(self.to_dict())
+        
+    def first_not_in_subnet(self, subnet):
+        from ipaddress import ip_network
+        return next(n for n in self.nodes if not ip_network(n.ip, strict=False).subnet_of(subnet))
 
     def test_policy(self, policy: Policy, type: str):
         from ipaddress import ip_network
+        
 
-        if policy.src_node is None:
-            if policy.dest_node is None:
-                policy.test(type, self.nodes[0], self.nodes[1])
-            else:
-                ip_dest = ip_network(policy.dest_node.ip)
-                for n in self.nodes:
-                    ip_n = ip_network(n.ip)
-                    if not ip_n.subnet_of(ip_dest):
-                        policy.test(type, n)
-                        return
-        else:
-            if policy.dest_node is None:
-                ip_src = ip_network(policy.src_node.ip)
-                for n in self.nodes:
-                    ip_n = ip_network(n.ip)
-                    if not ip_n.subnet_of(ip_src):
-                        policy.test(type, None, n)
-                        return
-            else:
-                policy.test(type)
+        src, dst = policy.src_node, policy.dest_node
+        router = self.find_node_by_name(src.nexthop if src is not None else dst.nexthop if dst is not None else None)
+        if router is None:
+            router = self.routers[0]
+        expected = router.compute_expected(policy)
+        if src is None and dst is None:
+            return policy.test(type, router.policies, self.nodes[0], self.nodes[1])
+
+        if src is None:
+            n = self.first_not_in_subnet(ip_network(dst.ip))
+            return policy.test(type, router.policies, n)
+
+        if dst is None:
+            n = self.first_not_in_subnet(ip_network(src.ip))
+            return policy.test(type, router.policies, None, n)
+
+        policy.test(type, router.policies)
+        
 
     def insert_policy(self, data):
         import threading

@@ -25,13 +25,13 @@ dest_type.addEventListener("change", ()=>{
 let ip_sel = true;
 protocolli.addEventListener("change", ()=>{
     const options = Array.from(protocolli.options);
-    const ip = options.find(o => o.value === "");
+    const ip = options.find(o => o.value === "ip");
 
     if (ip.selected) {
         ip_sel = true;
         options.forEach(o => {
             o.selected = true;
-            if (o.value !== "") {
+            if (o.value !== "ip") {
                 o.disabled = true;
             }
         });
@@ -91,8 +91,9 @@ aggiungi.addEventListener("click", ()=>{
             }
         }
     }
-
-    prot_array = Array.from(protocolli.selectedOptions).map(option => option.value);
+    const prot_array = Array.from(protocolli.selectedOptions)
+        .filter(option => !option.disabled)
+        .map(option => option.value);
 
     const policy = {
         source: source,
@@ -118,7 +119,10 @@ aggiungi.addEventListener("click", ()=>{
     dest_type.selectedIndex = 0;
     aggiorna(dest_type, dest_host, dest_subnet);
     filtro.selectedIndex = 0;
-    protocolli.selectedIndex = 0;
+    [...protocolli.options].forEach((opt, index)=>{
+        opt.selected = true;
+        opt.disabled = index !== 0;
+    });
 });
 
 let table = document.querySelector("tbody");

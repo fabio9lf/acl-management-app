@@ -2,9 +2,6 @@ Per far partire l'applicazione eseguire il file acl-app.sh passando come argomen
 I risultati dei test vengono salvati nel file test.log
 
 TO-DO:
-  - fix dei test con ping/netcat quando c'è un'altra policy che altera l'esito del test
-  - modifiche interfaccia web:
-      * migliorare css
   - aggiunta di altre topologie
 
 NOTA:

@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass
 from lib.node import Node
+from typing import List
 
 @dataclass
 class Policy:
@@ -33,7 +34,7 @@ class Policy:
             return self.src_node == value.src_node and self.dest_node == value.dest_node and self.line_number == value.line_number and self.protocollo == value.protocollo and self.target == value.target
         return False
 
-    def test(self, type: str, new_src: Node = None, new_dest: Node = None):
+    def test(self, type: str, policies: "List[Policy]", new_src: Node = None, new_dest: Node = None):
         import subprocess
 
         policy = self
@@ -41,12 +42,48 @@ class Policy:
             policy.src_node = new_src
         if self.dest_node is None:
             policy.dest_node = new_dest
-        rule = json.dumps(policy.to_dict())
         
+        expected = None
+        blocked = False
+        for p in policies:
+            if self.matches(p):
+                expected = p.target
+                blocked = True
+
+                if p == self:
+                    blocked = False
+                    if type != "insert":
+                        if p.target == "DROP":
+                            expected = "ACCEPT"
+                        else:
+                            expected = "DROP"
+                break
+        dict = {
+            "rule": policy.to_dict(), 
+            "blocked": blocked,
+            "type": type,
+            "expected": expected if not None else "DROP"
+        }
+        rule = json.dumps(dict)
         with open("test.log", "a") as file:
             if self.protocollo == "tcp":
-                subprocess.run(["pytest", "tests/test_tcp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], stdout=file)
+                subprocess.run(["pytest", "-s", "tests/test_tcp.py", "--rule", rule], stdout=file)
             elif self.protocollo == "udp":
-                subprocess.run(["pytest", "tests/test_udp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], stdout=file)
+                subprocess.run(["pytest", "-s", "tests/test_udp.py", "--rule", rule], stdout=file)
             else:
-                subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule, "--type", "{\"nome\": \""  + str(type) + "\"}"], stdout=file)
+                subprocess.run(["pytest", "-s", "tests/test_icmp.py", "--rule", rule], stdout=file)
+
+    def matches(self, other:"Policy") -> bool:
+        from ipaddress import ip_network
+        if self == other:
+            return True
+        if self.protocollo != "ip" and self.protocollo != other.protocollo:
+            return False
+
+        if self.src_node and not ip_network(other.src_node.ip if other.src_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.src_node.ip, strict=False)):
+            return False
+        
+        if self.dest_node and not ip_network(other.dest_node.ip if other.dest_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.dest_node.ip, strict=False)):
+            return False
+        
+        return True

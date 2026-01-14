@@ -1,14 +1,14 @@
 from ssh_connection import *
 
-def test_udp(rule, type):
-    client_dest = setup_connection(rule["dest_node"]["mgmt_ip"], "root", "root")
+def test_udp(rule):
+    client_dest = setup_connection(rule["rule"]["dest_node"]["mgmt_ip"], "root", "root")
     
     command = f"sh -c 'nc -u -l -p 5000 > /tmp/udp_received.log &'"
     execute_command(client_dest, command)
 
-    client_src = setup_connection(rule["src_node"]["mgmt_ip"], "root", "root")
+    client_src = setup_connection(rule["rule"]["src_node"]["mgmt_ip"], "root", "root")
 
-    command = "sh -c 'printf \"test\" | nc -u -w1 " +  rule['dest_node']['ip'] + " 5000'"
+    command = "sh -c 'printf \"test\" | nc -u -w1 " +  rule['rule']['dest_node']['ip'] + " 5000'"
     execute_command(client_src, command)
 
     stdin, stdout, stderr = execute_command(client_dest, "sh -c 'cat /tmp/udp_received.log'")
@@ -18,13 +18,10 @@ def test_udp(rule, type):
     close_connection(client_src)
     close_connection(client_dest)
     
-    if rule["target"] == "ACCEPT":
-        if type["nome"] == "insert":
-            assert "test" in output
-        else:
-            assert "" in output
+    if rule["expected"] == "ACCEPT":
+        assert "test" in output
     else:
-        if type["nome"] == "insert":
-            assert "" in output
-        else:
-            assert "test" in output
+        assert "" in output
+
+    if bool(rule["blocked"]):
+        print("\nPacchetto intercettato da un'altra policy!")
