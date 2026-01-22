@@ -61,7 +61,7 @@ class Policy:
         dict = {
             "rule": policy.to_dict(), 
             "blocked": blocked,
-            "type": type,
+            "type": "policy",
             "expected": expected if not None else "DROP"
         }
         rule = json.dumps(dict)
@@ -77,8 +77,12 @@ class Policy:
         from ipaddress import ip_network
         if self == other:
             return True
-        if self.protocollo != "ip" and self.protocollo != other.protocollo:
+        if other.protocollo != "" and self.protocollo != other.protocollo:
             return False
+
+        if self.protocollo == "tcp":
+            if ip_network(other.dest_node.ip if other.dest_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.src_node.ip, strict=False)) and ip_network(other.src_node.ip if other.src_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.dest_node.ip, strict=False)):
+                return True
 
         if self.src_node and not ip_network(other.src_node.ip if other.src_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.src_node.ip, strict=False)):
             return False

@@ -221,6 +221,62 @@ document.addEventListener("keydown", (e)=>{
     }
 });
 
+
+const test = document.getElementById("test");
+test.addEventListener("click", ()=>{
+    let overlay = document.getElementById("overlay")
+    let blocco = document.getElementById("blocking-overlay")
+    overlay.style.display = "block";
+    blocco.style.display = "block";
+    overlay.innerHTML = "Test in corso ...";
+    fetch("/test").then(response => response.json())
+    .then(data =>{
+        blocco.style.display = "none";
+        overlay.innerHTML = "<h1>Risultati dei test</h1><br>";
+        let close = document.createElement("button");
+        close.id = "close";
+        close.innerHTML = "Chiudi";
+        close.addEventListener("click", ()=>{
+            overlay.style.display = "none";
+        });
+        overlay.appendChild(close);
+        for(let i=0;i < data.length;i+=3){
+            let div = document.createElement("div");
+            div.classList.add("test_wrapper");
+            let title = document.createElement("h3");
+            title.innerHTML = data[i].src_node.nome + " (" + data[i].src_node.ip + ") --> " + data[i].dest_node.nome + " (" + data[i].dest_node.ip + ")";  
+            div.appendChild(title);
+            for(let j = 0;j < 3;j++){
+                let test = document.createElement("div");
+                let p = document.createElement("p");
+                p.innerHTML = "<h4> Test del protocollo " + data[i + j].protocollo + ":</h4> <br> Esito: ";
+                if(data[i + j].risultato){
+                    p.innerHTML += "<b style='color: green'> test superato</b> <br><br>"
+                    if(data[i + j].esito == "ACCEPT"){
+                        p.innerHTML += "I pacchetti transitano correttamente!";
+                    }
+                    else{
+                        p.innerHTML += "I pacchetti vengono correttamente bloccati!";
+                    }
+                }
+                else{
+                    p.innerHTML += "<b style='color: red'> test fallito</b> <br><br>"
+                    if(data[i + j].esito != "ACCEPT"){
+                        p.innerHTML += "I pacchetti transitano, ma dovrebbero essere bloccati!";
+                    }
+                    else{
+                        p.innerHTML += "I pacchetti vengono bloccati, ma dovrebbero transitare!";
+                    }
+                }
+                p.innerHTML += "<br><br>";
+                test.appendChild(p);
+                div.appendChild(test);
+            }
+            overlay.appendChild(div);
+        }
+    });
+});
+
 function aggiorna(type, host, subnet) {
     if(type.value == "host"){
         host.parentElement.classList.remove("hide");

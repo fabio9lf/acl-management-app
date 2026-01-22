@@ -1,9 +1,11 @@
-from lib.retrieve_network import update_network
+from lib.file_management import update_network, test_result_writer
 from dataclasses import dataclass
 from typing import List
 from lib.node import Node
 from lib.router import Router
 from lib.policy import Policy
+import threading
+from queue import Queue
 
 @dataclass
 class Network:
@@ -80,8 +82,7 @@ class Network:
         src, dst = policy.src_node, policy.dest_node
         router = self.find_node_by_name(src.nexthop if src is not None else dst.nexthop if dst is not None else None)
         if router is None:
-            router = self.routers[0]
-        expected = router.compute_expected(policy)
+            router = self.routers[0] 
         if src is None and dst is None:
             return policy.test(type, router.policies, self.nodes[0], self.nodes[1])
 
@@ -147,3 +148,55 @@ class Network:
         self.update_router_by_name(router)
 
 
+    def test_connectivity(self):
+        queue = Queue()
+        STOP = object()
+        threads = []
+        for src in self.nodes:
+            for dest in self.nodes:
+                if src == dest:
+                    continue
+                for proto in ("icmp", "udp", "tcp"):
+                    threads.append(threading.Thread(
+                        target=self.test,
+                        args=(proto,src, dest,queue,)
+                    ))
+        writer = threading.Thread(target=test_result_writer, args=(queue, STOP,))
+        writer.start()
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        queue.put(STOP) 
+        writer.join()
+
+    def test(self, protocol:str, src_node: Node, dest_node: Node, queue : Queue):
+        import subprocess, json
+        policy = Policy(src_node=src_node, dest_node=dest_node, protocollo=protocol, target="ACCEPT", line_number=-1)
+        router = self.find_node_by_name(src_node.nexthop)
+        expected = "ACCEPT"
+        for p in router.policies:
+            if policy.matches(p):
+                expected = p.target
+                break
+        dict = {
+            "rule": policy.to_dict(), 
+            "blocked": False,
+            "expected": expected,
+            "type": "network"
+        }
+        rule = json.dumps(dict)
+        if policy.protocollo == "tcp":
+            result = subprocess.run(["pytest", "tests/test_tcp.py", "--rule", rule], stdout=subprocess.PIPE)
+        elif policy.protocollo == "udp":
+            result = subprocess.run(["pytest", "tests/test_udp.py", "--rule", rule], stdout=subprocess.PIPE)
+        else:
+            result = subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule], stdout=subprocess.PIPE)   
+        test = {
+            "risultato": True if result.returncode == 0 else False, 
+            "src_node": src_node.to_dict(),
+            "dest_node": dest_node.to_dict(),
+            "protocollo": protocol,
+            "esito": expected
+        }
+        queue.put(test)

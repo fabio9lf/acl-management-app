@@ -1,7 +1,7 @@
 from flask import render_template, Flask, request
 from lib.network import Network
 from lib.policy import Policy
-from lib.retrieve_network import retrieve_network_as_json
+from lib.file_management import retrieve_network_as_json, retrieve_from_test_result, clear_test_result
 
 app = Flask(__name__)
 
@@ -43,6 +43,14 @@ def replace():
 @app.route("/reload", methods=["GET", "POST"])
 def reload():
     return retrieve_network_as_json()
+
+@app.route("/test", methods=["GET", "POST"])
+def test_connectivity():
+    clear_test_result()
+    network = Network.from_json(retrieve_network_as_json())
+    network.test_connectivity()
+    return retrieve_from_test_result()
+    
 
 
 if __name__ == "__main__":
