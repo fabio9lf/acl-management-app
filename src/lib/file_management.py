@@ -1,7 +1,5 @@
-#from classi import Network
 import json
 from queue import Queue
-import threading
 
 def retrieve_network_as_json(path = "network.json"):
     with open(path, "r") as file:

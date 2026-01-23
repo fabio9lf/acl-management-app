@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from lib.policy import Policy
 from tests.ssh_connection import *
-import threading
-from lib.thread_sync import first, second
 
 @dataclass
 class Router:
