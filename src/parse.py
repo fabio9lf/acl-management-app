@@ -16,9 +16,9 @@ def create_json(path):
         dati = yaml.safe_load(file)
     nodi = dati["topology"]["nodes"]
     for nome, info in nodi.items():
-        image = info.get("image")
+        group = info.get("group")
         mgmt_ip = info.get("mgmt-ipv4")
-        if image == "frr-ssh":
+        if group == "router":
             network["router"].append({
                 "nome": nome,
                 "mgmt_ip": mgmt_ip

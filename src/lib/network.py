@@ -104,10 +104,10 @@ class Network:
         protocolli = [p.strip() for p in data["protocolli"].split(", ")]
         target = data["target"]
 
-        if dest is not None:
-            router = self.find_node_by_name(dest.nexthop)
-        elif source is not None:
+        if source is not None:
             router = self.find_node_by_name(source.nexthop)
+        elif dest is not None:
+            router = self.find_node_by_name(dest.nexthop)
         else:
             router = None
         for protocollo in protocolli:
@@ -173,11 +173,14 @@ class Network:
     def test(self, protocol:str, src_node: Node, dest_node: Node, queue : Queue):
         import subprocess, json
         policy = Policy(src_node=src_node, dest_node=dest_node, protocollo=protocol, target="ACCEPT", line_number=-1)
-        router = self.find_node_by_name(src_node.nexthop)
+        routers = [self.find_node_by_name(src_node.nexthop), self.find_node_by_name(dest_node.nexthop)]
         expected = "ACCEPT"
-        for p in router.policies:
-            if policy.matches(p):
-                expected = p.target
+        for router in routers:
+            for p in router.policies:
+                if policy.matches(p):
+                    expected = p.target
+                    break
+            if expected == "DROP":
                 break
         dict = {
             "rule": policy.to_dict(), 

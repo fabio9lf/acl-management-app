@@ -14,11 +14,3 @@ def test_icmp(rule):
 
     if bool(rule["blocked"]):
         print("\nPacchetto intercettato da un'altra policy!")
-
-#    elif rule["expected"] == "ACCEPT":
-#        if rule["type"] != "insert":
-#            assert "0 received" in stdout or "failed" in stdout or "Connection refused" not in stdout
-#        else:
-#            assert "0 received" not in stdout and "failed" not in stdout
-
-
