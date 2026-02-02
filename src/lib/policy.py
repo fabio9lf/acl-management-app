@@ -73,21 +73,25 @@ class Policy:
             else:
                 subprocess.run(["pytest", "-s", "tests/test_icmp.py", "--rule", rule], stdout=file)
 
-    def matches(self, other:"Policy") -> bool:
+    def matches(self, other: "Policy") -> bool:
         from ipaddress import ip_network
-        if self == other:
-            return True
-        if other.protocollo != "" and self.protocollo != other.protocollo:
+
+        if self.protocollo and other.protocollo and self.protocollo != other.protocollo:
             return False
 
-        if self.protocollo == "tcp":
-            if ip_network(other.dest_node.ip if other.dest_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.src_node.ip, strict=False)) and ip_network(other.src_node.ip if other.src_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.dest_node.ip, strict=False)):
+        def ip_match(a, b):
+            if a is None or b is None:
+                return True  
+            return ip_network(b.ip, strict=False).subnet_of(ip_network(a.ip, strict=False))
+
+        normal_match = ip_match(self.src_node, other.src_node) and ip_match(self.dest_node, other.dest_node)
+
+        if normal_match:
+            return True
+
+        if other.protocollo == "tcp":
+            reverse_match = ip_match(self.src_node, other.dest_node) and ip_match(self.dest_node, other.src_node)
+            if reverse_match:
                 return True
 
-        if self.src_node and not ip_network(other.src_node.ip if other.src_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.src_node.ip, strict=False)):
-            return False
-        
-        if self.dest_node and not ip_network(other.dest_node.ip if other.dest_node is not None else "0.0.0.0/0", strict=False).subnet_of(ip_network(self.dest_node.ip, strict=False)):
-            return False
-        
-        return True
+        return False

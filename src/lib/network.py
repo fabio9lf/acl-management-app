@@ -171,35 +171,42 @@ class Network:
         writer.join()
 
     def test(self, protocol:str, src_node: Node, dest_node: Node, queue : Queue):
-        import subprocess, json
+        import subprocess, json, tempfile
         policy = Policy(src_node=src_node, dest_node=dest_node, protocollo=protocol, target="ACCEPT", line_number=-1)
-        routers = [self.find_node_by_name(src_node.nexthop), self.find_node_by_name(dest_node.nexthop)]
+        
         expected = "ACCEPT"
+        routers = [self.find_node_by_name(src_node.nexthop), self.find_node_by_name(dest_node.nexthop)]
         for router in routers:
+            router_expected = "ACCEPT"
             for p in router.policies:
-                if policy.matches(p):
-                    expected = p.target
+                if p.matches(policy):
+                    router_expected = p.target
                     break
-            if expected == "DROP":
+            if router_expected == "DROP":
+                expected = "DROP"
                 break
-        dict = {
-            "rule": policy.to_dict(), 
+
+        test_dict = {
+            "rule": policy.to_dict(),
             "blocked": False,
             "expected": expected,
             "type": "network"
         }
-        rule = json.dumps(dict)
-        if policy.protocollo == "tcp":
-            result = subprocess.run(["pytest", "tests/test_tcp.py", "--rule", rule], stdout=subprocess.PIPE)
-        elif policy.protocollo == "udp":
-            result = subprocess.run(["pytest", "tests/test_udp.py", "--rule", rule], stdout=subprocess.PIPE)
-        else:
-            result = subprocess.run(["pytest", "tests/test_icmp.py", "--rule", rule], stdout=subprocess.PIPE)   
-        test = {
-            "risultato": True if result.returncode == 0 else False, 
+
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as file:
+            json.dump(test_dict, file)
+            tmpfile = file.name
+
+        test_file = f"tests/test_{protocol}.py"
+        result = subprocess.run(["pytest", test_file, "--rule-file", tmpfile], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        #print(result.stdout.decode())
+        #print(result.stderr.decode())
+
+        queue.put({
+            "risultato": result.returncode == 0,
             "src_node": src_node.to_dict(),
             "dest_node": dest_node.to_dict(),
             "protocollo": protocol,
             "esito": expected
-        }
-        queue.put(test)
+        })

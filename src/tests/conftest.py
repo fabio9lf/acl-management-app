@@ -2,15 +2,22 @@ import json
 import pytest
 
 def pytest_addoption(parser):
-    parser.addoption("--rule", action="store", default="{}")
+    parser.addoption("--rule-file", action="store", default=None, help="Percorso del file JSON contenente la regola")
 
 @pytest.fixture
 def rule(request):
-    return json.loads(request.config.getoption("--rule"))
+    rule_file = request.config.getoption("--rule-file")
+    if not rule_file:
+        pytest.fail("Devi passare un file json!")
+    with open(rule_file, "r") as file:
+        rule_data = json.load(file)
+    return rule_data
 
 
 def pytest_report_header(config):
-    rule = json.loads(config.getoption("--rule"))
+    rule_file = config.getoption("--rule-file")
+    with open(rule_file) as file:
+        rule = json.load(file)
     if rule["type"] == "policy":
         optional = [
             f"dei pacchetti di tipo {rule['rule']['protocollo']}" if rule["rule"]["protocollo"] != "" else f"dei pacchetti ip",
