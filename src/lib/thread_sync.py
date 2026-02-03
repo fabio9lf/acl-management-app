@@ -1,5 +1,3 @@
-import threading
-
 def first(event, callback, args):
     callback(*args)
     event.set()
