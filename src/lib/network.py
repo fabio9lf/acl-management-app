@@ -73,32 +73,9 @@ class Network:
         
     def first_not_in_subnet(self, subnet):
         from ipaddress import ip_network
-        return next(n for n in self.nodes if not ip_network(n.ip, strict=False).subnet_of(subnet))
-
-    def test_policy(self, policy: Policy, type: str):
-        from ipaddress import ip_network
-        
-
-        src, dst = policy.src_node, policy.dest_node
-        router = self.find_node_by_name(src.nexthop if src is not None else dst.nexthop if dst is not None else None)
-        if router is None:
-            router = self.routers[0] 
-        if src is None and dst is None:
-            return policy.test(type, router.policies, self.nodes[0], self.nodes[1])
-
-        if src is None:
-            n = self.first_not_in_subnet(ip_network(dst.ip))
-            return policy.test(type, router.policies, n)
-
-        if dst is None:
-            n = self.first_not_in_subnet(ip_network(src.ip))
-            return policy.test(type, router.policies, None, n)
-
-        policy.test(type, router.policies)
-        
+        return next(n for n in self.nodes if not ip_network(n.ip, strict=False).subnet_of(subnet))         
 
     def insert_policy(self, data):
-        import threading
         source = self.find_node_by_name(data["source"])
         dest = self.find_node_by_name(data["dest"])
         protocolli = [p.strip() for p in data["protocolli"].split(", ")]
@@ -119,18 +96,15 @@ class Network:
                 for r in self.routers:
                     r.insert_policy(policy)
                     self.update_router_by_name(r)
-            threading.Thread(target=self.test_policy, args=(policy, "insert",)).start()
 
     def remove_policy(self, line_number, router_name):
         import threading
         router = self.find_node_by_name(router_name)
         policy = router.remove_policy(line_number)
         self.update_router_by_name(router)
-        threading.Thread(target=self.test_policy, args=(policy, "remove",)).start()
 
     def replace_policy(self, line_number, router_name, data):
-        from lib.thread_sync import first, second, threading
-
+    
         source = self.find_node_by_name(data["source"])
         dest = self.find_node_by_name(data["dest"])
         protocolli = [p.strip() for p in data["protocolli"].split(", ")]
@@ -142,8 +116,6 @@ class Network:
         for protocollo in protocolli:
             policy = Policy(source, dest, protocollo, target, line_number)
             removed = router.replace_policy(line_number, policy)
-            threading.Thread(target=first, args=(first_done, self.test_policy, (removed, "remove"),)).start()
-            threading.Thread(target=second, args=(first_done, self.test_policy, (policy, "insert"),)).start()
             line_number = str(int(line_number) + 1)
         self.update_router_by_name(router)
 

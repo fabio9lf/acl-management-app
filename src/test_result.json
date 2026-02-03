@@ -34,7 +34,7 @@
         "esito": "ACCEPT"
     },
     {
-        "risultato": true,
+        "risultato": false,
         "src_node": {
             "nome": "h1",
             "ip": "192.168.10.2",
@@ -82,10 +82,10 @@
             "mgmt_ip": "172.20.20.7"
         },
         "protocollo": "tcp",
-        "esito": "ACCEPT"
+        "esito": "DROP"
     },
     {
-        "risultato": true,
+        "risultato": false,
         "src_node": {
             "nome": "h1",
             "ip": "192.168.10.2",
@@ -184,10 +184,10 @@
             "mgmt_ip": "172.20.20.7"
         },
         "protocollo": "tcp",
-        "esito": "ACCEPT"
+        "esito": "DROP"
     },
     {
-        "risultato": true,
+        "risultato": false,
         "src_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
@@ -235,7 +235,7 @@
             "mgmt_ip": "172.20.20.5"
         },
         "protocollo": "tcp",
-        "esito": "ACCEPT"
+        "esito": "DROP"
     },
     {
         "risultato": false,
@@ -286,10 +286,10 @@
             "mgmt_ip": "172.20.20.6"
         },
         "protocollo": "tcp",
-        "esito": "ACCEPT"
+        "esito": "DROP"
     },
     {
-        "risultato": true,
+        "risultato": false,
         "src_node": {
             "nome": "h3",
             "ip": "192.168.30.2",

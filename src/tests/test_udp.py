@@ -22,6 +22,3 @@ def test_udp(rule):
         assert "test" in output
     else:
         assert "" in output
-
-    if bool(rule["blocked"]):
-        print("\nPacchetto intercettato da un'altra policy!")

@@ -1,5 +1,4 @@
 from ssh_connection import *
-
 def test_icmp(rule):
     client = setup_connection(rule["rule"]["src_node"]["mgmt_ip"], "root", "root")
     command = "sh -c 'sudo ping -c3 " + rule["rule"]["dest_node"]["ip"] if rule["rule"]["dest_node"] is not None else "0.0.0.0"  + "'"
@@ -12,5 +11,3 @@ def test_icmp(rule):
     else:
          assert "0 received" not in stdout and "failed" not in stdout
 
-    if bool(rule["blocked"]):
-        print("\nPacchetto intercettato da un'altra policy!")

@@ -11,7 +11,6 @@ if [ ! -d "$TOPO" ]; then
     exit 1
 fi
 
-> test.log
 > network.json
 containerlab deploy -t $TOPO/topology.clab.yaml
 python3 parse.py $TOPO/topology.clab.yaml

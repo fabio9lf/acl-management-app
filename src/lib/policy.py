@@ -34,44 +34,7 @@ class Policy:
             return self.src_node == value.src_node and self.dest_node == value.dest_node and self.line_number == value.line_number and self.protocollo == value.protocollo and self.target == value.target
         return False
 
-    def test(self, type: str, policies: "List[Policy]", new_src: Node = None, new_dest: Node = None):
-        import subprocess
-
-        policy = self
-        if self.src_node is None:
-            policy.src_node = new_src
-        if self.dest_node is None:
-            policy.dest_node = new_dest
-        
-        expected = None
-        blocked = False
-        for p in policies:
-            if self.matches(p):
-                expected = p.target
-                blocked = True
-
-                if p == self:
-                    blocked = False
-                    if type != "insert":
-                        if p.target == "DROP":
-                            expected = "ACCEPT"
-                        else:
-                            expected = "DROP"
-                break
-        dict = {
-            "rule": policy.to_dict(), 
-            "blocked": blocked,
-            "type": "policy",
-            "expected": expected if not None else "DROP"
-        }
-        rule = json.dumps(dict)
-        with open("test.log", "a") as file:
-            if self.protocollo == "tcp":
-                subprocess.run(["pytest", "-s", "tests/test_tcp.py", "--rule", rule], stdout=file)
-            elif self.protocollo == "udp":
-                subprocess.run(["pytest", "-s", "tests/test_udp.py", "--rule", rule], stdout=file)
-            else:
-                subprocess.run(["pytest", "-s", "tests/test_icmp.py", "--rule", rule], stdout=file)
+    
 
     def matches(self, other: "Policy") -> bool:
         from ipaddress import ip_network

@@ -71,7 +71,20 @@
         {
             "nome": "r3",
             "mgmt_ip": "172.20.20.4",
-            "policy": []
+            "policy": [
+                {
+                    "src_node": {
+                        "nome": "h3",
+                        "mgmt_ip": "172.20.20.7",
+                        "nexthop": "r3",
+                        "ip": "192.168.30.2"
+                    },
+                    "dest_node": null,
+                    "protocollo": "tcp",
+                    "target": "DROP",
+                    "line_number": "1"
+                }
+            ]
         }
     ]
 }

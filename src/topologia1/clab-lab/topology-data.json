@@ -6,7 +6,7 @@
       "prefix": "clab",
       "mgmt": {
         "network": "clab",
-        "bridge": "br-645c795463c5",
+        "bridge": "br-1b25e4ac590d",
         "ipv4-subnet": "172.20.20.0/24",
         "ipv4-gw": "172.20.20.1",
         "ipv6-subnet": "3fff:172:20:20::/64",
@@ -30,11 +30,11 @@
       "mgmt-intf": "",
       "mgmt-ipv4-address": "172.20.20.3",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-address": "3fff:172:20:20::4",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-645c795463c5",
+        "clab-mgmt-net-bridge": "br-1b25e4ac590d",
         "clab-node-group": "host",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/topologia1/clab-lab/h1",
@@ -71,7 +71,7 @@
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-645c795463c5",
+        "clab-mgmt-net-bridge": "br-1b25e4ac590d",
         "clab-node-group": "host",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/topologia1/clab-lab/h2",
@@ -104,11 +104,11 @@
       "mgmt-intf": "",
       "mgmt-ipv4-address": "172.20.20.5",
       "mgmt-ipv4-prefix-length": 24,
-      "mgmt-ipv6-address": "3fff:172:20:20::4",
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-645c795463c5",
+        "clab-mgmt-net-bridge": "br-1b25e4ac590d",
         "clab-node-group": "host",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/topologia1/clab-lab/h3",
@@ -145,7 +145,7 @@
       "mgmt-ipv6-prefix-length": 64,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-645c795463c5",
+        "clab-mgmt-net-bridge": "br-1b25e4ac590d",
         "clab-node-group": "router",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/clab/tesi_LaFalce/src/topologia1/clab-lab/r1",
@@ -172,13 +172,13 @@
         "a": {
           "node": "r1",
           "interface": "eth1",
-          "mac": "aa:c1:ab:8d:57:66",
+          "mac": "aa:c1:ab:e3:85:e0",
           "peer": "z"
         },
         "z": {
           "node": "h1",
           "interface": "eth1",
-          "mac": "aa:c1:ab:1c:26:33",
+          "mac": "aa:c1:ab:eb:00:11",
           "peer": "a"
         }
       }
@@ -188,13 +188,13 @@
         "a": {
           "node": "r1",
           "interface": "eth2",
-          "mac": "aa:c1:ab:a4:35:df",
+          "mac": "aa:c1:ab:43:8f:79",
           "peer": "z"
         },
         "z": {
           "node": "h2",
           "interface": "eth1",
-          "mac": "aa:c1:ab:aa:12:39",
+          "mac": "aa:c1:ab:91:b7:6d",
           "peer": "a"
         }
       }
@@ -204,13 +204,13 @@
         "a": {
           "node": "r1",
           "interface": "eth3",
-          "mac": "aa:c1:ab:51:aa:9b",
+          "mac": "aa:c1:ab:82:58:c1",
           "peer": "z"
         },
         "z": {
           "node": "h3",
           "interface": "eth1",
-          "mac": "aa:c1:ab:5d:a0:a5",
+          "mac": "aa:c1:ab:a3:99:3a",
           "peer": "a"
         }
       }

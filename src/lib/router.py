@@ -119,9 +119,3 @@ class Router:
             "policy": [p.to_dict() for p in self.policies]
         }
     
-    def compute_expected(self, policy: Policy):
-        for p in self.policies:
-            if p.matches(policy):
-                return p.target
-            if p == policy:
-                return policy.target

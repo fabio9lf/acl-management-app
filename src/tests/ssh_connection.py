@@ -1,7 +1,6 @@
 
 import paramiko
 def setup_connection(ip="172.20.20.5", username="admin", password="cisco") -> paramiko.SSHClient:
-    
 
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
