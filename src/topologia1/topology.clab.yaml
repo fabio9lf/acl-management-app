@@ -16,7 +16,6 @@ topology:
       image: alpine-ssh:latest
       binds:
         - ./configs/__clabNodeName__/startup.sh:/startup.sh
-        - ./configs/__clabNodeName__/captures.pcap:/tmp/captures.pcap
       exec:
         - /bin/sh /startup.sh
 

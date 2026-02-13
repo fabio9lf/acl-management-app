@@ -18,6 +18,7 @@ RUN apk add --no-cache \
     iproute2 \
     iputils \
     tcpdump \
+    tshark \
     vim \
     nano \
     sudo \

@@ -5,13 +5,13 @@
             "nome": "h1",
             "ip": "192.168.10.2",
             "nexthop": "r1",
-            "mgmt_ip": "172.20.20.5"
+            "mgmt_ip": "172.20.20.3"
         },
         "dest_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "protocollo": "icmp",
         "esito": "ACCEPT"
@@ -22,81 +22,30 @@
             "nome": "h1",
             "ip": "192.168.10.2",
             "nexthop": "r1",
-            "mgmt_ip": "172.20.20.5"
+            "mgmt_ip": "172.20.20.3"
         },
         "dest_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
-        },
-        "protocollo": "tcp",
-        "esito": "ACCEPT"
-    },
-    {
-        "risultato": false,
-        "src_node": {
-            "nome": "h1",
-            "ip": "192.168.10.2",
             "nexthop": "r1",
-            "mgmt_ip": "172.20.20.5"
-        },
-        "dest_node": {
-            "nome": "h2",
-            "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
-        },
-        "protocollo": "udp",
-        "esito": "ACCEPT"
-    },
-    {
-        "risultato": true,
-        "src_node": {
-            "nome": "h1",
-            "ip": "192.168.10.2",
-            "nexthop": "r1",
-            "mgmt_ip": "172.20.20.5"
-        },
-        "dest_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
-        },
-        "protocollo": "icmp",
-        "esito": "ACCEPT"
-    },
-    {
-        "risultato": true,
-        "src_node": {
-            "nome": "h1",
-            "ip": "192.168.10.2",
-            "nexthop": "r1",
-            "mgmt_ip": "172.20.20.5"
-        },
-        "dest_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
+            "mgmt_ip": "172.20.20.4"
         },
         "protocollo": "tcp",
         "esito": "DROP"
     },
     {
-        "risultato": false,
+        "risultato": true,
         "src_node": {
             "nome": "h1",
             "ip": "192.168.10.2",
             "nexthop": "r1",
-            "mgmt_ip": "172.20.20.5"
+            "mgmt_ip": "172.20.20.3"
         },
         "dest_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
+            "nome": "h2",
+            "ip": "192.168.20.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "protocollo": "udp",
         "esito": "ACCEPT"
@@ -104,48 +53,48 @@
     {
         "risultato": true,
         "src_node": {
-            "nome": "h2",
-            "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
-        },
-        "dest_node": {
             "nome": "h1",
             "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
+        },
+        "dest_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
             "nexthop": "r1",
             "mgmt_ip": "172.20.20.5"
         },
         "protocollo": "icmp",
-        "esito": "ACCEPT"
+        "esito": "DROP"
     },
     {
         "risultato": true,
         "src_node": {
-            "nome": "h2",
-            "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
-        },
-        "dest_node": {
             "nome": "h1",
             "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
+        },
+        "dest_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
             "nexthop": "r1",
             "mgmt_ip": "172.20.20.5"
         },
         "protocollo": "tcp",
-        "esito": "ACCEPT"
+        "esito": "DROP"
     },
     {
         "risultato": true,
         "src_node": {
-            "nome": "h2",
-            "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
-        },
-        "dest_node": {
             "nome": "h1",
             "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
+        },
+        "dest_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
             "nexthop": "r1",
             "mgmt_ip": "172.20.20.5"
         },
@@ -157,14 +106,14 @@
         "src_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "dest_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
+            "nome": "h1",
+            "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
         },
         "protocollo": "icmp",
         "esito": "ACCEPT"
@@ -174,31 +123,133 @@
         "src_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "dest_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
+            "nome": "h1",
+            "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
         },
         "protocollo": "tcp",
         "esito": "DROP"
     },
     {
-        "risultato": false,
+        "risultato": true,
         "src_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
+        },
+        "dest_node": {
+            "nome": "h1",
+            "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
+        },
+        "protocollo": "udp",
+        "esito": "ACCEPT"
+    },
+    {
+        "risultato": true,
+        "src_node": {
+            "nome": "h2",
+            "ip": "192.168.20.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "dest_node": {
             "nome": "h3",
             "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
+        },
+        "protocollo": "icmp",
+        "esito": "ACCEPT"
+    },
+    {
+        "risultato": true,
+        "src_node": {
+            "nome": "h2",
+            "ip": "192.168.20.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
+        },
+        "dest_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
+        },
+        "protocollo": "tcp",
+        "esito": "ACCEPT"
+    },
+    {
+        "risultato": true,
+        "src_node": {
+            "nome": "h2",
+            "ip": "192.168.20.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
+        },
+        "dest_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
+        },
+        "protocollo": "udp",
+        "esito": "DROP"
+    },
+    {
+        "risultato": true,
+        "src_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
+        },
+        "dest_node": {
+            "nome": "h1",
+            "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
+        },
+        "protocollo": "icmp",
+        "esito": "ACCEPT"
+    },
+    {
+        "risultato": true,
+        "src_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
+        },
+        "dest_node": {
+            "nome": "h1",
+            "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
+        },
+        "protocollo": "tcp",
+        "esito": "DROP"
+    },
+    {
+        "risultato": true,
+        "src_node": {
+            "nome": "h3",
+            "ip": "192.168.30.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
+        },
+        "dest_node": {
+            "nome": "h1",
+            "ip": "192.168.10.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.3"
         },
         "protocollo": "udp",
         "esito": "ACCEPT"
@@ -208,99 +259,48 @@
         "src_node": {
             "nome": "h3",
             "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
-        },
-        "dest_node": {
-            "nome": "h1",
-            "ip": "192.168.10.2",
             "nexthop": "r1",
             "mgmt_ip": "172.20.20.5"
+        },
+        "dest_node": {
+            "nome": "h2",
+            "ip": "192.168.20.2",
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "protocollo": "icmp",
-        "esito": "ACCEPT"
-    },
-    {
-        "risultato": true,
-        "src_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
-        },
-        "dest_node": {
-            "nome": "h1",
-            "ip": "192.168.10.2",
-            "nexthop": "r1",
-            "mgmt_ip": "172.20.20.5"
-        },
-        "protocollo": "tcp",
         "esito": "DROP"
     },
     {
-        "risultato": false,
+        "risultato": true,
         "src_node": {
             "nome": "h3",
             "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
-        },
-        "dest_node": {
-            "nome": "h1",
-            "ip": "192.168.10.2",
             "nexthop": "r1",
             "mgmt_ip": "172.20.20.5"
         },
-        "protocollo": "udp",
-        "esito": "ACCEPT"
-    },
-    {
-        "risultato": true,
-        "src_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
-        },
         "dest_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
-        },
-        "protocollo": "icmp",
-        "esito": "ACCEPT"
-    },
-    {
-        "risultato": true,
-        "src_node": {
-            "nome": "h3",
-            "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
-        },
-        "dest_node": {
-            "nome": "h2",
-            "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "protocollo": "tcp",
-        "esito": "DROP"
+        "esito": "ACCEPT"
     },
     {
-        "risultato": false,
+        "risultato": true,
         "src_node": {
             "nome": "h3",
             "ip": "192.168.30.2",
-            "nexthop": "r3",
-            "mgmt_ip": "172.20.20.7"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.5"
         },
         "dest_node": {
             "nome": "h2",
             "ip": "192.168.20.2",
-            "nexthop": "r2",
-            "mgmt_ip": "172.20.20.6"
+            "nexthop": "r1",
+            "mgmt_ip": "172.20.20.4"
         },
         "protocollo": "udp",
         "esito": "ACCEPT"

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione dinamica delle ACL</title>
     <link rel="stylesheet" href="../static/styles/style.css">
+    <!--<link href="https://cdn.jsdelivr.net/npm/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />-->
 </head>
 <body>
     <div class="container">
@@ -90,6 +91,11 @@
                 <div>
                     <button id="test">Testa connettività</button>
                 </div>
+                <!--<div>
+                    <button id="topo_btn">
+                        Test live 
+                    </button>
+                </div>-->
             </div>
         </div>
         <h3>
@@ -154,10 +160,23 @@
             </ul>
         </div>
     </div>
-    <div id="overlay"></div>
+    <div id="overlay">
+       <!--<div id="controls">
+
+            <select id="proto">
+                <option value="icmp">ICMP</option>
+                <option value="udp">UDP</option>
+                <option value="tcp">TCP</option>
+            </select>
+
+            <button onclick="send_packet()">Invia pacchetto</button>
+
+        </div>-->
+    </div>
     <div id="blocking-overlay"></div>
     
 </body>
+<!--<script src="https://cdn.jsdelivr.net/npm/vis-network/standalone/umd/vis-network.min.js"></script>-->
 <script src="../static/scripts/script.js">
 </script>
 </html>

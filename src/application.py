@@ -1,6 +1,5 @@
-from flask import render_template, Flask, request
+from flask import render_template, Flask, request, jsonify
 from lib.network import Network
-from lib.policy import Policy
 from lib.file_management import retrieve_network_as_json, retrieve_from_test_result, clear_test_result
 
 app = Flask(__name__)
@@ -50,7 +49,11 @@ def test_connectivity():
     network = Network.from_json(retrieve_network_as_json())
     network.test_connectivity()
     return retrieve_from_test_result()
-    
+
+@app.route("/topology", methods=["GET", "POST"])
+def show_topology():
+    network = Network.from_json(retrieve_network_as_json())
+    return jsonify(network.visualization_topology())  
 
 
 if __name__ == "__main__":

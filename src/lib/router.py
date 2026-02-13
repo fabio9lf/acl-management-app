@@ -16,7 +16,7 @@ class Router:
     def execute(self, command):
         return execute_command(self.client, command=command)
     def insert_policy(self, new_policy: Policy):
-        from ipaddress import ip_network, ip_address
+        from ipaddress import ip_network
 
         if new_policy in self.policies:
             return
@@ -66,7 +66,6 @@ class Router:
     def save(self):
         self.connect()
         stdin, stdout, stderr = self.execute(command="bash -c 'sudo iptables-save > /etc/iptables/rules.v4'")
-        print(stderr.read().decode())
         self.close()
 
     def remove_policy(self, number) -> Policy:

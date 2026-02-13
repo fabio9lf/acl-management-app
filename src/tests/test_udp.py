@@ -1,4 +1,5 @@
 from ssh_connection import *
+import pyshark
 
 def test_udp(rule):
     client_dest = setup_connection(rule["rule"]["dest_node"]["mgmt_ip"], "root", "root")
@@ -7,9 +8,9 @@ def test_udp(rule):
     execute_command(client_dest, command)
 
     client_src = setup_connection(rule["rule"]["src_node"]["mgmt_ip"], "root", "root")
-
-    command = "sh -c 'printf \"test\" | nc -u -w1 " +  rule['rule']['dest_node']['ip'] + " 5000'"
-    execute_command(client_src, command)
+    for i in range(3):
+        command = f"sh -c 'printf 'test{i}' | nc -u -w3 " +  rule['rule']['dest_node']['ip'] + " 5000'"
+        execute_command(client_src, command)
 
     stdin, stdout, stderr = execute_command(client_dest, "sh -c 'cat /tmp/udp_received.log'")
     output = stdout.read().decode()

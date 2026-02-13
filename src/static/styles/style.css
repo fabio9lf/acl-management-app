@@ -51,10 +51,10 @@ select {
 select[multiple] {
     height: auto;
 }
-.hide {
+.hide, #controls {
     display: none;
 }
-#aggiungi, #test {
+#aggiungi, #test, #topo_btn {
     width: 100%;
     padding: 12px;
     border: none;
@@ -66,7 +66,7 @@ select[multiple] {
     cursor: pointer;
     transition: background 0.2s ease;
 }
-#aggiungi:hover, #test:hover {
+#aggiungi:hover, #test:hover, #topo_btn:hover {
     background-color: #2980b9;
 }
 table {

@@ -277,6 +277,9 @@ test.addEventListener("click", ()=>{
     });
 });
 
+let topology = document.getElementById("topo_btn");
+topology.addEventListener("click", get_topology);
+
 function aggiorna(type, host, subnet) {
     if(type.value == "host"){
         host.parentElement.classList.remove("hide");
@@ -338,4 +341,104 @@ function crea_select(value, tipo){
         select.appendChild(opt);
     });
     return select;
+}
+
+function ip_to_int(ip){
+    return ip.split(".").reduce((acc, oct) => (acc << 8) + parseInt(oct), 0) >>> 0;
+}
+
+function in_subnet(host, subnet){
+    const [subnet_ip, prefix] = subnet.split("/");
+    const mask = ~(2 ** (32 - prefix) - 1);
+    return (ip_to_int(host) & mask) === (ip_to_int(subnet) & mask);
+}
+
+async function get_topology() {
+    const container = document.getElementById("overlay");
+    container.style.display = "block";
+    const response = await fetch("/topology")
+    const data = await response.json();
+
+    const nodes = new vis.DataSet(data.nodes);
+    const edges = new vis.DataSet(data.edges);
+    const options = {
+        groups: {
+            host: { 
+                shape: "image",
+                image: "/static/images/pc.png",
+                size: 60
+            },
+            router: { 
+                shape: "image",
+                image: "/static/images/router.png",
+                size: 70
+            },
+            subnet: {shape: "box", color: {background: "#DDDDDD"}, font: {size: 20}},
+            label:{
+                shape: "text", 
+                font:{
+                    size: 20
+                }
+            }
+        },
+        physics: {
+            stabilization: {
+                iterations: 200
+            },
+            barnesHut: {
+                gravitationalConstant: -2500,
+                springLength: 300
+            }
+        },
+        edges: {
+            smooth: false
+        }
+    };
+
+    const network = new vis.Network(container, { nodes, edges }, options);
+
+    network.once("stabilized", () => {
+        network.fit({
+            animation: true
+        });
+    });
+    network.on("afterDrawing", () => {
+        network.fit();
+    });
+
+    network.fit({
+        animation: {
+            duration: 500,
+            easingFunction: "easeInOutQuad"
+        }
+    });
+    let selectedDst = null;
+    let selectedSrc = null;
+    network.on("click", function(params) {
+
+        if (!params.nodes.length) return;
+
+        const nodeId = params.nodes[0];
+        const node = nodes.get(nodeId);
+
+        if (node.group !== "host") return;
+
+        if (!selectedSrc) {
+            selectedSrc = nodeId;
+            nodes.update({id: nodeId, borderWidth: 4});
+            return;
+        }
+
+        if (!selectedDst && nodeId !== selectedSrc) {
+            selectedDst = nodeId;
+            nodes.update({id: nodeId, borderWidth: 4});
+            document.getElementById("controls").style.display = "block";
+            return;
+        }
+
+    });
+}
+
+function send_packet(){
+    
 }

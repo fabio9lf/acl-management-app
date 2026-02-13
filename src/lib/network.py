@@ -11,7 +11,6 @@ from queue import Queue
 class Network:
     subnets:List[Node]
     nodes:List[Node]
-    #policies:List[Policy]
     routers: List[Router]
 
 
@@ -182,3 +181,35 @@ class Network:
             "protocollo": protocol,
             "esito": expected
         })
+
+    def visualization_topology(self):
+        json_nodes = []
+        json_edges = []
+
+
+        for i, r in enumerate(self.routers):
+            json_nodes.append({"id": r.nome, "label": "", "group": "router", "x": 300 + 200 * i, "y": 150, "fixed": True})
+            json_nodes.append({"id": "label_" + r.nome, "label": r.nome, "group": "label", "x": 300 + 200 * i, "y": 100, "fixed": True})
+            for j, s in enumerate(self.routers):
+                if i >= j:
+                    continue
+                json_edges.append({"from": r.nome, "to": s.nome})
+        for i, n in enumerate(self.nodes):
+            json_nodes.append({"id": n.ip, "label": "", "group": "host", "x": 300 + 200 * i, "y": 350, "fixed": True})
+            json_nodes.append({"id": "label_" + n.nome, "label": n.nome, "group": "label", "x": 200 + 200 * i, "y": 355, "fixed": True})
+            json_edges.append({"from": n.ip, "to": n.nexthop})
+        
+        print(json_nodes, json_edges)
+
+        for i, s in enumerate(self.subnets):
+            json_nodes.append({
+                "id": s.ip,
+                "label": s.nome,
+                "group": "subnet",
+                "x": 300 + 200 * i, 
+                "y": 450, 
+                "fixed": True
+            })
+            json_edges.append({"from": self.nodes[i].ip, "to": s.ip, "hidden": True})
+
+        return {"nodes": json_nodes, "edges": json_edges}
